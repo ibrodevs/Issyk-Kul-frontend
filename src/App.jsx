@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TopNav from './components/TopNav';
 import HeroSection from './components/HeroSection';
 import AboutMainPage from './components/AboutMainPage';
@@ -8,10 +8,39 @@ import DepartmentsSection from './components/DepartmentsSection';
 import MediaSection from './components/MediaSection';
 import SiteFooter from './components/SiteFooter';
 import { getDictionary } from './i18n';
+import { LoaderCircle, Mountain } from 'lucide-react';
 
 export default function App() {
   const [lang, setLang] = useState('ru');
+  const [heroVideoLoaded, setHeroVideoLoaded] = useState(false);
+  const [showPreloader, setShowPreloader] = useState(true);
   const t = getDictionary(lang);
+
+  useEffect(() => {
+    const fallbackTimer = window.setTimeout(() => {
+      setHeroVideoLoaded(true);
+    }, 8000);
+
+    return () => window.clearTimeout(fallbackTimer);
+  }, []);
+
+  useEffect(() => {
+    if (!heroVideoLoaded) {
+      document.body.style.overflow = 'hidden';
+      return;
+    }
+
+    const exitTimer = window.setTimeout(() => {
+      setShowPreloader(false);
+    }, 450);
+
+    document.body.style.overflow = '';
+
+    return () => {
+      window.clearTimeout(exitTimer);
+      document.body.style.overflow = '';
+    };
+  }, [heroVideoLoaded]);
 
   const navItems = [
     { href: '#about', label: t.nav.about },
@@ -31,9 +60,29 @@ export default function App() {
         <div className="absolute bottom-10 left-1/3 h-52 w-52 rounded-full bg-sky/10 blur-3xl animate-float" />
       </div>
 
+      {showPreloader && (
+        <div
+          className={`fixed inset-0 z-[100] flex items-center justify-center bg-[#061526] transition-opacity duration-500 ${
+            heroVideoLoaded ? 'pointer-events-none opacity-0' : 'opacity-100'
+          }`}
+          aria-hidden={heroVideoLoaded}
+        >
+          <div className="flex flex-col items-center gap-4 text-center">
+            <div className="relative grid h-16 w-16 place-items-center rounded-2xl border border-white/15 bg-white/5 backdrop-blur-xl">
+              <Mountain className="h-7 w-7 text-emerald-300" />
+              <div className="absolute -inset-3 rounded-3xl bg-emerald-400/10 blur-xl" />
+            </div>
+            <div className="flex items-center gap-2 text-sm text-white/80">
+              <LoaderCircle className="h-4 w-4 animate-spin text-sky-300" />
+              <span>{lang === 'en' ? 'Loading...' : lang === 'kg' ? 'Жүктөлүүдө...' : 'Загрузка...'}</span>
+            </div>
+          </div>
+        </div>
+      )}
+
       <TopNav navItems={navItems} lang={lang} setLang={setLang} t={t} />
-      <main>
-        <HeroSection t={t} />
+      <main className={`transition-opacity duration-500 ${heroVideoLoaded ? 'opacity-100' : 'opacity-0'}`}>
+        <HeroSection t={t} onVideoLoad={() => setHeroVideoLoaded(true)} />
         <AboutMainPage t={t} />
         <TourismSection t={t} />
         <NewsSection t={t} />

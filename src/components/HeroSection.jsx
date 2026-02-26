@@ -1,10 +1,51 @@
-export default function HeroSection({ t }) {
+import { useEffect, useRef } from 'react';
+
+export default function HeroSection({ t, onVideoLoad }) {
+  const iframeRef = useRef(null);
+  const didNotifyRef = useRef(false);
+
+  useEffect(() => {
+    const handleMessage = (event) => {
+      if (!event.origin.includes('vimeo.com')) return;
+
+      let payload;
+      try {
+        payload = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+      } catch {
+        return;
+      }
+
+      if (!payload || payload.player_id !== 'hero-vimeo') return;
+
+      if (payload.event === 'ready' && iframeRef.current?.contentWindow) {
+        iframeRef.current.contentWindow.postMessage(
+          JSON.stringify({ method: 'addEventListener', value: 'play' }),
+          '*'
+        );
+        iframeRef.current.contentWindow.postMessage(
+          JSON.stringify({ method: 'addEventListener', value: 'playing' }),
+          '*'
+        );
+      }
+
+      if ((payload.event === 'play' || payload.event === 'playing') && !didNotifyRef.current) {
+        didNotifyRef.current = true;
+        onVideoLoad?.();
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, [onVideoLoad]);
+
   return (
     <section className="relative h-screen w-full overflow-hidden -mt-[var(--nav-height,80px)]">
       {/* Видео фон */}
       <div className="absolute inset-0">
         <iframe
-          src="https://player.vimeo.com/video/185290450?background=1&autoplay=1&muted=1&loop=1&transparent=0"
+          ref={iframeRef}
+          id="hero-vimeo"
+          src="https://player.vimeo.com/video/185290450?background=1&autoplay=1&muted=1&loop=1&transparent=0&api=1&player_id=hero-vimeo"
           className="absolute left-1/2 top-1/2 h-[56.25vw] min-h-full w-[177.77777778vh] min-w-full -translate-x-1/2 -translate-y-1/2"
           style={{ 
             pointerEvents: 'none',
