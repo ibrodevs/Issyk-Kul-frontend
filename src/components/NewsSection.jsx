@@ -91,7 +91,7 @@ const scrollSlider = (direction) => {
         {/* Featured слайдер */}
         <motion.div variants={itemVariants} className="relative">
           <div className="mb-4 flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-white">
+            <h3 className="text-lg font-semibold text-slate-900">
               <span className="bg-gradient-to-r from-emerald-400 to-sky-400 bg-clip-text text-transparent">
                 {t.news.featuredTitle}
               </span>
@@ -101,7 +101,7 @@ const scrollSlider = (direction) => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => scrollSlider('left')}
-                className="rounded-full bg-white/10 p-2 text-white/60 hover:bg-white/20 hover:text-white"
+                className="rounded-full border border-slate-200 bg-white p-2 text-slate-500 hover:bg-slate-50 hover:text-slate-900"
               >
                 <ChevronLeft className="h-4 w-4" />
               </motion.button>
@@ -109,7 +109,7 @@ const scrollSlider = (direction) => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => scrollSlider('right')}
-                className="rounded-full bg-white/10 p-2 text-white/60 hover:bg-white/20 hover:text-white"
+                className="rounded-full border border-slate-200 bg-white p-2 text-slate-500 hover:bg-slate-50 hover:text-slate-900"
               >
                 <ChevronRight className="h-4 w-4" />
               </motion.button>
@@ -217,8 +217,8 @@ const scrollSlider = (direction) => {
               whileTap={{ scale: 0.95 }}
               className={`relative overflow-hidden rounded-full px-5 py-2.5 text-sm font-medium transition-all ${
                 selectedCategory === category.id
-                  ? 'text-white'
-                  : 'text-white/60 hover:text-white/80'
+                  ? 'text-slate-900'
+                  : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               {selectedCategory === category.id && (
@@ -231,7 +231,7 @@ const scrollSlider = (direction) => {
               <span className="relative z-10 flex items-center gap-2">
                 <category.Icon className="h-4 w-4" />
                 <span>{category.label}</span>
-                <span className="rounded-full bg-white/20 px-2 py-0.5 text-xs">
+                <span className="rounded-full bg-slate-200/80 px-2 py-0.5 text-xs">
                   {category.count}
                 </span>
               </span>
@@ -248,7 +248,7 @@ const scrollSlider = (direction) => {
                 key={news.id}
                 variants={itemVariants}
                 whileHover={{ y: -5 }}
-                className="group relative overflow-hidden rounded-xl bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-sm"
+              className="group relative overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_10px_24px_rgba(15,23,42,0.05)]"
               >
                 {/* Изображение */}
                 <div className="relative h-48 overflow-hidden">
@@ -275,7 +275,7 @@ const scrollSlider = (direction) => {
                 {/* Контент */}
                 <div className="p-5">
                   {/* Дата и просмотры */}
-                  <div className="flex items-center gap-3 text-xs text-white/40">
+                  <div className="flex items-center gap-3 text-xs text-slate-500">
                     <span className="inline-flex items-center gap-1">
                       <Calendar className="h-3.5 w-3.5" />
                       {news.date}
@@ -287,12 +287,12 @@ const scrollSlider = (direction) => {
                   </div>
 
                   {/* Заголовок */}
-                  <h4 className="mt-2 text-lg font-semibold text-white line-clamp-2">
+                  <h4 className="mt-2 text-lg font-semibold text-slate-900 line-clamp-2">
                     {news.title}
                   </h4>
 
                   {/* Описание */}
-                  <p className="mt-2 text-sm text-white/60 line-clamp-2">
+                  <p className="mt-2 text-sm leading-6 text-slate-600 line-clamp-2">
                     {news.description}
                   </p>
 
@@ -302,7 +302,7 @@ const scrollSlider = (direction) => {
                       {news.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="rounded-full bg-white/10 px-2 py-0.5 text-xs text-white/50"
+                          className="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-slate-500"
                         >
                           #{tag}
                         </span>
@@ -338,7 +338,7 @@ const scrollSlider = (direction) => {
               className={`h-10 w-10 rounded-lg ${
                 page === 1
                   ? 'bg-gradient-to-r from-emerald-500 to-sky-500 text-white'
-                  : 'bg-white/10 text-white/60 hover:bg-white/20'
+                  : 'border border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
               }`}
             >
               {page}

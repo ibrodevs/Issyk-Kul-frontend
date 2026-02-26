@@ -16,7 +16,7 @@ export default function TourismSection({ t }) {
     >
       <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
         {localizedPlaces.map((place, idx) => (
-          <article key={place.name} className="group relative overflow-hidden rounded-3xl border border-white/15 bg-white/5 shadow-glass" style={{ animationDelay: `${idx * 70}ms` }}>
+          <article key={place.name} className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_12px_28px_rgba(15,23,42,0.06)]" style={{ animationDelay: `${idx * 70}ms` }}>
             <div className="relative h-52 overflow-hidden">
               <img src={place.image} alt={place.name} className="h-full w-full object-cover transition duration-700 group-hover:scale-110" />
               <div className="absolute inset-0 bg-gradient-to-t from-mountain/85 via-mountain/20 to-transparent" />
@@ -25,9 +25,9 @@ export default function TourismSection({ t }) {
               </span>
             </div>
             <div className="relative p-5">
-              <h3 className="text-lg font-bold text-white">{place.name}</h3>
-              <p className="mt-2 text-sm leading-6 text-white/70">{place.description}</p>
-              <button type="button" className="mt-4 inline-flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/20">
+              <h3 className="text-lg font-bold text-slate-900">{place.name}</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600">{place.description}</p>
+              <button type="button" className="mt-4 inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-800 transition hover:bg-slate-100">
                 {t.tourism.cta} <span className="transition group-hover:translate-x-1">→</span>
               </button>
             </div>

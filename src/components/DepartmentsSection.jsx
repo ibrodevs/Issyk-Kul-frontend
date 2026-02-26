@@ -79,17 +79,17 @@ export default function DepartmentsSection({ t }) {
               placeholder={t.departments.searchPlaceholder}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full rounded-xl bg-white/10 px-4 py-3 pl-11 text-white placeholder-white/40 outline-none focus:ring-2 focus:ring-emerald-500"
+              className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 pl-11 text-slate-900 placeholder-slate-400 outline-none focus:ring-2 focus:ring-emerald-500"
             />
-            <Search className="absolute left-3 top-3.5 h-5 w-5 text-white/40" />
+            <Search className="absolute left-3 top-3.5 h-5 w-5 text-slate-400" />
           </div>
           
           <div className="flex gap-3 text-sm">
-            <div className="rounded-lg bg-white/10 px-4 py-2 text-white/80">
-              <span className="font-semibold text-emerald-400">{filteredDepartments.length}</span> {t.departments.statDepartmentsSuffix}
+            <div className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-slate-700">
+              <span className="font-semibold text-emerald-500">{filteredDepartments.length}</span> {t.departments.statDepartmentsSuffix}
             </div>
-            <div className="rounded-lg bg-white/10 px-4 py-2 text-white/80">
-              <span className="font-semibold text-sky-400">{t.departments.supportValue}</span> {t.departments.supportLabel}
+            <div className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-slate-700">
+              <span className="font-semibold text-sky-500">{t.departments.supportValue}</span> {t.departments.supportLabel}
             </div>
           </div>
         </motion.div>
@@ -105,7 +105,7 @@ export default function DepartmentsSection({ t }) {
               className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
                 (cat === t.departments.filters[0] && searchTerm === '') || searchTerm === cat
                   ? 'bg-gradient-to-r from-emerald-500 to-sky-500 text-white'
-                  : 'bg-white/10 text-white/60 hover:bg-white/20'
+                  : 'border border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
               }`}
             >
               {cat}
@@ -125,7 +125,7 @@ export default function DepartmentsSection({ t }) {
               whileHover={{ y: -5 }}
               onHoverStart={() => setSelectedDepartment(index)}
               onHoverEnd={() => setSelectedDepartment(null)}
-              className="group relative overflow-hidden rounded-2xl bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-sm"
+              className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_10px_26px_rgba(15,23,42,0.05)]"
             >
               {/* Декоративный фон */}
               <motion.div
@@ -138,26 +138,26 @@ export default function DepartmentsSection({ t }) {
               {/* Верхняя часть с иконкой и категорией */}
               <div className="relative p-6 pb-4">
                 <div className="flex items-start justify-between">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500/20 to-sky-500/20 text-white">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-50 to-sky-50 text-emerald-600">
                     {(() => {
                       const Icon = departmentIcons[dept.icon] || Mountain;
                       return <Icon className="h-7 w-7" />;
                     })()}
                   </div>
-                  <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white/60">
+                  <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-600">
                     {dept.category}
                   </span>
                 </div>
 
-                <h3 className="mt-4 text-xl font-bold text-white">{dept.name}</h3>
+                <h3 className="mt-4 text-xl font-bold text-slate-900">{dept.name}</h3>
                 
                 {dept.description && (
-                  <p className="mt-2 text-sm text-white/50 line-clamp-2">{dept.description}</p>
+                  <p className="mt-2 text-sm text-slate-600 line-clamp-2">{dept.description}</p>
                 )}
               </div>
 
               {/* Информация о руководителе */}
-              <div className="relative border-t border-white/10 px-6 py-4">
+              <div className="relative border-t border-slate-100 px-6 py-4">
                 <div className="flex items-center gap-3">
                   <div className="relative">
                     <div className="h-10 w-10 overflow-hidden rounded-full bg-gradient-to-br from-emerald-500 to-sky-500">
@@ -169,12 +169,12 @@ export default function DepartmentsSection({ t }) {
                         </div>
                       )}
                     </div>
-                    <div className="absolute -bottom-1 -right-1 h-3 w-3 rounded-full bg-emerald-400 ring-2 ring-gray-900" />
+                    <div className="absolute -bottom-1 -right-1 h-3 w-3 rounded-full bg-emerald-400 ring-2 ring-white" />
                   </div>
                   <div>
-                    <p className="text-xs text-white/40">{t.departments.leaderLabel}</p>
-                    <p className="text-sm font-medium text-white">{dept.head}</p>
-                    <p className="text-xs text-white/40">{dept.headTitle || 'Director'}</p>
+                    <p className="text-xs text-slate-500">{t.departments.leaderLabel}</p>
+                    <p className="text-sm font-medium text-slate-900">{dept.head}</p>
+                    <p className="text-xs text-slate-500">{dept.headTitle || 'Director'}</p>
                   </div>
                 </div>
               </div>
@@ -182,21 +182,21 @@ export default function DepartmentsSection({ t }) {
               {/* Контакты */}
               <div className="space-y-2 px-6 py-4">
                 <div className="flex items-center gap-3 text-sm">
-                  <Phone className="h-4 w-4 text-white/40" />
-                  <a href={`tel:${dept.phone}`} className="text-white/80 hover:text-emerald-400 transition-colors">
+                  <Phone className="h-4 w-4 text-slate-400" />
+                  <a href={`tel:${dept.phone}`} className="text-slate-700 transition-colors hover:text-emerald-500">
                     {dept.phone}
                   </a>
                 </div>
                 <div className="flex items-center gap-3 text-sm">
-                  <Mail className="h-4 w-4 text-white/40" />
-                  <a href={`mailto:${dept.email}`} className="text-white/80 hover:text-emerald-400 transition-colors truncate">
+                  <Mail className="h-4 w-4 text-slate-400" />
+                  <a href={`mailto:${dept.email}`} className="truncate text-slate-700 transition-colors hover:text-emerald-500">
                     {dept.email}
                   </a>
                 </div>
                 {dept.address && (
                   <div className="flex items-center gap-3 text-sm">
-                    <MapPin className="h-4 w-4 text-white/40" />
-                    <span className="text-white/60 truncate">{dept.address}</span>
+                    <MapPin className="h-4 w-4 text-slate-400" />
+                    <span className="truncate text-slate-600">{dept.address}</span>
                   </div>
                 )}
               </div>
@@ -215,16 +215,16 @@ export default function DepartmentsSection({ t }) {
         {filteredDepartments.length === 0 && (
           <motion.div
             variants={itemVariants}
-            className="flex flex-col items-center justify-center rounded-2xl bg-white/5 p-12 text-center"
+            className="flex flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white p-12 text-center"
           >
-            <SearchX className="mb-4 h-14 w-14 text-white/40" />
-            <h3 className="text-xl font-semibold text-white">{t.departments.noResultsTitle}</h3>
-            <p className="mt-2 text-white/60">{t.departments.noResultsText}</p>
+            <SearchX className="mb-4 h-14 w-14 text-slate-400" />
+            <h3 className="text-xl font-semibold text-slate-900">{t.departments.noResultsTitle}</h3>
+            <p className="mt-2 text-slate-600">{t.departments.noResultsText}</p>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setSearchTerm('')}
-              className="mt-4 rounded-xl bg-white/10 px-6 py-2 text-white"
+              className="mt-4 rounded-xl border border-slate-200 bg-slate-50 px-6 py-2 text-slate-800"
             >
               {t.departments.resetFilter}
             </motion.button>

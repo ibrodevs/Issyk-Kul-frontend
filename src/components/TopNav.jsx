@@ -94,10 +94,10 @@ export default function TopNav({ navItems, lang, setLang, t }) {
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, type: 'spring', damping: 20 }}
-          className={`mx-auto flex max-w-7xl items-center justify-between gap-3 rounded-2xl border border-white/20 px-4 py-3 shadow-glass backdrop-blur-2xl transition-all duration-500 ${
+          className={`mx-auto flex max-w-7xl items-center justify-between gap-3 rounded-2xl border border-slate-200 px-4 py-3 shadow-[0_10px_30px_rgba(15,23,42,0.08)] backdrop-blur-2xl transition-all duration-500 ${
             scrolled 
-              ? 'bg-white/15 py-2 shadow-[0_8px_32px_rgba(0,0,0,0.2)]' 
-              : 'bg-white/10'
+              ? 'bg-white/90 py-2 shadow-[0_12px_32px_rgba(15,23,42,0.12)]' 
+              : 'bg-white/75'
           }`}
         >
           {/* Логотип с улучшенной анимацией */}
@@ -114,13 +114,13 @@ export default function TopNav({ navItems, lang, setLang, t }) {
             </motion.div>
             <div>
               <motion.p 
-                className="text-xs uppercase tracking-[0.2em] text-white/60"
+                className="text-xs uppercase tracking-[0.2em] text-slate-500"
                 animate={{ opacity: scrolled ? 0.8 : 1 }}
               >
                 {t.brand.short}
               </motion.p>
               <motion.p 
-                className="text-sm font-semibold text-white"
+                className="text-sm font-semibold text-slate-900"
                 animate={{ opacity: scrolled ? 0.9 : 1 }}
               >
                 {t.brand.full}
@@ -142,8 +142,8 @@ export default function TopNav({ navItems, lang, setLang, t }) {
               >
                 <span className={`relative z-10 transition-colors ${
                   activeSection === item.href.replace('#', '')
-                    ? 'text-white'
-                    : 'text-white/80 hover:text-white'
+                    ? 'text-slate-900'
+                    : 'text-slate-600 hover:text-slate-900'
                 }`}>
                   {item.label}
                 </span>
@@ -152,7 +152,7 @@ export default function TopNav({ navItems, lang, setLang, t }) {
                 {activeSection === item.href.replace('#', '') && (
                   <motion.div
                     layoutId="activeSection"
-                    className="absolute inset-0 rounded-xl bg-gradient-to-r from-emerald-500/20 to-sky-500/20 border border-emerald-400/30"
+                    className="absolute inset-0 rounded-xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-sky-50"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.3 }}
@@ -162,7 +162,7 @@ export default function TopNav({ navItems, lang, setLang, t }) {
                 {/* Эффект при наведении */}
                 {hoveredItem === index && activeSection !== item.href.replace('#', '') && (
                   <motion.div
-                    className="absolute inset-0 rounded-xl bg-white/10"
+                    className="absolute inset-0 rounded-xl bg-slate-100"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
@@ -176,7 +176,7 @@ export default function TopNav({ navItems, lang, setLang, t }) {
           {/* Правая часть: языки + мобильное меню */}
           <div className="flex items-center gap-2">
             {/* Переключатель языков */}
-            <div className="hidden sm:flex items-center gap-1 rounded-xl border border-white/20 bg-white/5 p-1 backdrop-blur-sm">
+            <div className="hidden sm:flex items-center gap-1 rounded-xl border border-slate-200 bg-white p-1">
               {['ru', 'kg', 'en'].map((code) => (
                 <motion.button
                   key={code}
@@ -187,7 +187,7 @@ export default function TopNav({ navItems, lang, setLang, t }) {
                   className={`relative rounded-lg px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.15em] transition-all overflow-hidden ${
                     lang === code
                       ? 'text-white'
-                      : 'text-white/70 hover:text-white'
+                      : 'text-slate-600 hover:text-slate-900'
                   }`}
                   aria-pressed={lang === code}
                 >
@@ -211,7 +211,7 @@ export default function TopNav({ navItems, lang, setLang, t }) {
               onClick={() => setMobileMenuOpen(true)}
               whileHover={{ scale: 1.1, rotate: 90 }}
               whileTap={{ scale: 0.9 }}
-              className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 bg-white/5 text-white transition hover:bg-white/10 lg:hidden"
+              className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-50 lg:hidden"
               aria-label={t.topNav.openMenu}
             >
               <motion.span
@@ -249,14 +249,14 @@ export default function TopNav({ navItems, lang, setLang, t }) {
             {/* Панель меню */}
             <motion.nav
               variants={menuVariants}
-              className="relative flex w-80 transform flex-col gap-4 bg-gradient-to-b from-gray-900/95 to-gray-950/95 p-8 shadow-2xl backdrop-blur-xl border-l border-white/10"
+              className="relative flex w-80 transform flex-col gap-4 border-l border-slate-200 bg-gradient-to-b from-white to-slate-50 p-8 shadow-2xl"
             >
               <motion.button
                 type="button"
                 onClick={() => setMobileMenuOpen(false)}
                 whileHover={{ scale: 1.1, rotate: 90 }}
                 whileTap={{ scale: 0.9 }}
-                className="self-end rounded-full p-2 text-white/80 hover:bg-white/10"
+                className="self-end rounded-full p-2 text-slate-500 hover:bg-slate-100"
                 aria-label={t.topNav.closeMenu}
               >
                 <X className="h-5 w-5" />
@@ -273,8 +273,8 @@ export default function TopNav({ navItems, lang, setLang, t }) {
                   <Mountain className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <p className="text-xs uppercase tracking-[0.2em] text-white/60">{t.brand.short}</p>
-                  <p className="text-sm font-semibold text-white">{t.brand.full}</p>
+                  <p className="text-xs uppercase tracking-[0.2em] text-slate-500">{t.brand.short}</p>
+                  <p className="text-sm font-semibold text-slate-900">{t.brand.full}</p>
                 </div>
               </motion.div>
 
@@ -293,8 +293,8 @@ export default function TopNav({ navItems, lang, setLang, t }) {
                 >
                   <div className={`px-4 py-4 text-base font-medium transition-all ${
                     activeSection === item.href.replace('#', '')
-                      ? 'bg-gradient-to-r from-emerald-500/20 to-sky-500/20 text-white border-l-4 border-emerald-400 pl-3'
-                      : 'text-white/80 hover:bg-white/5 hover:text-white'
+                      ? 'border-l-4 border-emerald-400 bg-gradient-to-r from-emerald-50 to-sky-50 pl-3 text-slate-900'
+                      : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900'
                   }`}>
                     {item.label}
                   </div>
@@ -318,7 +318,7 @@ export default function TopNav({ navItems, lang, setLang, t }) {
 
               {/* Языки в мобильном меню */}
               <motion.div 
-                className="mt-8 grid grid-cols-3 gap-2 border-t border-white/10 pt-6"
+                className="mt-8 grid grid-cols-3 gap-2 border-t border-slate-200 pt-6"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.4 }}
@@ -336,7 +336,7 @@ export default function TopNav({ navItems, lang, setLang, t }) {
                     className={`relative overflow-hidden rounded-xl py-3 text-sm font-semibold uppercase transition-all ${
                       lang === code
                         ? 'bg-gradient-to-r from-emerald-500 to-sky-500 text-white shadow-lg'
-                        : 'bg-white/5 text-white/70 hover:bg-white/10 hover:text-white'
+                        : 'bg-white text-slate-600 ring-1 ring-slate-200 hover:bg-slate-50 hover:text-slate-900'
                     }`}
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
@@ -349,7 +349,7 @@ export default function TopNav({ navItems, lang, setLang, t }) {
 
               {/* Декоративный элемент */}
               <motion.div
-                className="absolute bottom-8 left-8 right-8 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                className="absolute bottom-8 left-8 right-8 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"
                 initial={{ scaleX: 0, opacity: 0 }}
                 animate={{ scaleX: 1, opacity: 1 }}
                 transition={{ delay: 0.5, duration: 0.5 }}

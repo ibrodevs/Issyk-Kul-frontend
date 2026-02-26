@@ -16,7 +16,7 @@ export default function MediaSection({ t }) {
     >
       <div className="grid gap-5 md:grid-cols-3">
         {localizedItems.map((item) => (
-          <article key={item.title} className="group relative overflow-hidden rounded-3xl border border-white/15 bg-white/5 shadow-glass">
+          <article key={item.title} className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_12px_28px_rgba(15,23,42,0.06)]">
             <img src={item.image} alt={item.title} className="h-72 w-full object-cover transition duration-700 group-hover:scale-110" />
             <div className="absolute inset-0 bg-gradient-to-t from-mountain/90 via-mountain/25 to-transparent" />
             <div className="absolute inset-0 opacity-0 transition group-hover:opacity-100">

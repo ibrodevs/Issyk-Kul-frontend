@@ -5,12 +5,12 @@ export default function SectionShell({ id, eyebrow, title, subtitle, children, c
         {(eyebrow || title || subtitle) && (
           <div className="mb-8 flex flex-col gap-4 lg:mb-10">
             {eyebrow && (
-              <span className="inline-flex w-fit items-center rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-white/80 backdrop-blur-xl">
+              <span className="inline-flex w-fit items-center rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-600 shadow-sm">
                 {eyebrow}
               </span>
             )}
-            {title && <h2 className="font-display text-2xl leading-tight text-white sm:text-3xl lg:text-4xl">{title}</h2>}
-            {subtitle && <p className="max-w-3xl text-sm leading-7 text-sky-50/75 sm:text-base">{subtitle}</p>}
+            {title && <h2 className="font-display text-2xl leading-tight text-slate-900 sm:text-3xl lg:text-4xl">{title}</h2>}
+            {subtitle && <p className="max-w-3xl text-base leading-7 text-slate-600">{subtitle}</p>}
           </div>
         )}
         {children}

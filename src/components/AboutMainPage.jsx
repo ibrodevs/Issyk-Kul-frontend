@@ -138,17 +138,17 @@ export default function AboutMainPage({ t }) {
                 <motion.div
                   key={item.label}
                   whileHover={{ scale: 1.02, y: -4 }}
-                  className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-white/10 to-white/5 p-6 backdrop-blur-sm"
+                  className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_10px_24px_rgba(15,23,42,0.05)]"
                 >
                   <div className="absolute right-0 top-0 h-20 w-20 translate-x-6 -translate-y-6 rounded-full bg-emerald-500/10 blur-2xl group-hover:bg-emerald-500/20 transition-colors" />
                   
-                  <p className="relative text-xs uppercase tracking-wider text-white/60">{item.label}</p>
-                  <p className="relative mt-2 text-3xl font-bold text-white">{item.value}</p>
+                  <p className="relative text-xs uppercase tracking-wider text-slate-500">{item.label}</p>
+                  <p className="relative mt-2 text-3xl font-bold text-slate-900">{item.value}</p>
                   
                   <div className="absolute bottom-2 right-2 opacity-10 group-hover:opacity-30 transition-opacity">
                     {(() => {
                       const Icon = statIcons[index];
-                      return Icon ? <Icon className="h-8 w-8 text-white" /> : null;
+                      return Icon ? <Icon className="h-8 w-8 text-slate-700" /> : null;
                     })()}
                   </div>
                 </motion.div>
@@ -158,8 +158,8 @@ export default function AboutMainPage({ t }) {
         </div>
 
         {/* Интерактивные табы */}
-        <motion.div variants={itemVariants} className="rounded-3xl bg-white/5 p-6 backdrop-blur-sm">
-          <div className="flex gap-2 border-b border-white/10 pb-4">
+        <motion.div variants={itemVariants} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-[0_12px_28px_rgba(15,23,42,0.05)]">
+          <div className="flex gap-2 border-b border-slate-200 pb-4">
             {tabs.map((tab) => (
               <motion.button
                 key={tab.id}
@@ -168,14 +168,14 @@ export default function AboutMainPage({ t }) {
                 whileTap={{ scale: 0.95 }}
                 className={`relative flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-medium transition-colors ${
                   activeTab === tab.id
-                    ? 'text-white'
-                    : 'text-white/60 hover:text-white/80'
+                    ? 'text-slate-900'
+                    : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
                 {activeTab === tab.id && (
                   <motion.div
                     layoutId="activeTab"
-                    className="absolute inset-0 rounded-xl bg-gradient-to-r from-emerald-500/20 to-sky-500/20"
+                    className="absolute inset-0 rounded-xl bg-gradient-to-r from-emerald-50 to-sky-50"
                     transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
                   />
                 )}
@@ -193,11 +193,11 @@ export default function AboutMainPage({ t }) {
             className="mt-6 grid gap-6 md:grid-cols-2"
           >
             <div>
-            <h4 className="text-xl font-semibold text-white">
+            <h4 className="text-xl font-semibold text-slate-900">
                 {tabContent[activeTab].title}
             </h4>
 
-            <p className="mt-2 text-white/70">
+            <p className="mt-2 leading-7 text-slate-600">
                 {tabContent[activeTab].description}
             </p>
 
@@ -205,7 +205,7 @@ export default function AboutMainPage({ t }) {
                 {tabContent[activeTab].highlights.map((item) => (
                 <span
                     key={item}
-                    className="rounded-full bg-white/10 px-3 py-1 text-sm text-white/80"
+                    className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-sm text-slate-700"
                 >
                     <span className="inline-flex items-center gap-1">
                       <Sparkles className="h-3.5 w-3.5" />
@@ -240,7 +240,7 @@ export default function AboutMainPage({ t }) {
 
         {/* Карта и действия */}
         <motion.div variants={itemVariants} className="grid gap-6 md:grid-cols-2">
-          <div className="relative h-64 overflow-hidden rounded-3xl border border-white/10 bg-white/5">
+          <div className="relative h-64 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_10px_24px_rgba(15,23,42,0.05)]">
             <iframe
               title={t.about.map.title}
               src="https://www.openstreetmap.org/export/embed.html?bbox=75.6%2C42.1%2C79.9%2C43.4&layer=mapnik&marker=42.45%2C77.28"
@@ -266,8 +266,8 @@ export default function AboutMainPage({ t }) {
           </div>
 
           <div className="space-y-4">
-            <h5 className="text-xl font-semibold text-white">{t.about.travel.title}</h5>
-            <p className="text-white/70">{t.about.travel.subtitle}</p>
+            <h5 className="text-xl font-semibold text-slate-900">{t.about.travel.title}</h5>
+            <p className="leading-7 text-slate-600">{t.about.travel.subtitle}</p>
             
             <div className="grid gap-3">
               {[
@@ -278,12 +278,12 @@ export default function AboutMainPage({ t }) {
                 <motion.button
                   key={item.text}
                   whileHover={{ x: 4 }}
-                  className="flex items-center gap-4 rounded-xl bg-white/5 p-4 text-left transition-colors hover:bg-white/10"
+                  className="flex items-center gap-4 rounded-xl border border-slate-200 bg-white p-4 text-left transition-colors hover:bg-slate-50"
                 >
-                  <item.Icon className="h-6 w-6 text-white" />
+                  <item.Icon className="h-6 w-6 text-emerald-600" />
                   <div>
-                    <div className="font-medium text-white">{item.text}</div>
-                    <div className="text-sm text-white/60">{item.desc}</div>
+                    <div className="font-medium text-slate-900">{item.text}</div>
+                    <div className="text-sm text-slate-600">{item.desc}</div>
                   </div>
                 </motion.button>
               ))}

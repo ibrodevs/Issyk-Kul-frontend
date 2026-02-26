@@ -52,27 +52,27 @@ export default function App() {
   ];
 
   return (
-    <div className="relative min-h-screen overflow-x-clip bg-[#061526] text-white">
+    <div className="relative min-h-screen overflow-x-clip bg-white text-slate-900">
       <div className="pointer-events-none fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_10%,rgba(59,182,232,0.22),transparent_45%),radial-gradient(circle_at_88%_8%,rgba(34,227,192,0.16),transparent_40%),radial-gradient(circle_at_50%_120%,rgba(234,247,255,0.08),transparent_55%),linear-gradient(180deg,#07192c_0%,#061526_45%,#081b31_100%)]" />
-        <div className="absolute left-[8%] top-24 h-40 w-40 rounded-full bg-lake/20 blur-3xl animate-float" />
-        <div className="absolute right-[10%] top-52 h-48 w-48 rounded-full bg-aqua/15 blur-3xl animate-pulse-glow" />
-        <div className="absolute bottom-10 left-1/3 h-52 w-52 rounded-full bg-sky/10 blur-3xl animate-float" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_10%,rgba(59,182,232,0.10),transparent_42%),radial-gradient(circle_at_88%_8%,rgba(16,185,129,0.09),transparent_38%),radial-gradient(circle_at_50%_120%,rgba(148,163,184,0.08),transparent_55%),linear-gradient(180deg,#ffffff_0%,#f8fbff_48%,#f4f8fc_100%)]" />
+        <div className="absolute left-[8%] top-24 h-40 w-40 rounded-full bg-sky-200/40 blur-3xl animate-float" />
+        <div className="absolute right-[10%] top-52 h-48 w-48 rounded-full bg-emerald-200/30 blur-3xl animate-pulse-glow" />
+        <div className="absolute bottom-10 left-1/3 h-52 w-52 rounded-full bg-blue-100/40 blur-3xl animate-float" />
       </div>
 
       {showPreloader && (
         <div
-          className={`fixed inset-0 z-[100] flex items-center justify-center bg-[#061526] transition-opacity duration-500 ${
+          className={`fixed inset-0 z-[100] flex items-center justify-center bg-white transition-opacity duration-500 ${
             heroVideoLoaded ? 'pointer-events-none opacity-0' : 'opacity-100'
           }`}
           aria-hidden={heroVideoLoaded}
         >
           <div className="flex flex-col items-center gap-4 text-center">
-            <div className="relative grid h-16 w-16 place-items-center rounded-2xl border border-white/15 bg-white/5 backdrop-blur-xl">
-              <Mountain className="h-7 w-7 text-emerald-300" />
-              <div className="absolute -inset-3 rounded-3xl bg-emerald-400/10 blur-xl" />
+            <div className="relative grid h-16 w-16 place-items-center rounded-2xl border border-slate-200 bg-white shadow-sm">
+              <Mountain className="h-7 w-7 text-emerald-500" />
+              <div className="absolute -inset-3 rounded-3xl bg-emerald-400/15 blur-xl" />
             </div>
-            <div className="flex items-center gap-2 text-sm text-white/80">
+            <div className="flex items-center gap-2 text-sm text-slate-600">
               <LoaderCircle className="h-4 w-4 animate-spin text-sky-300" />
               <span>{lang === 'en' ? 'Loading...' : lang === 'kg' ? 'Жүктөлүүдө...' : 'Загрузка...'}</span>
             </div>

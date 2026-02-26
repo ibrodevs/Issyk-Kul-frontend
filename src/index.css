@@ -4,7 +4,7 @@
 
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 html {
@@ -14,7 +14,9 @@ html {
 body {
   margin: 0;
   font-family: 'Manrope', sans-serif;
-  background: #061526;
+  background: #ffffff;
+  color: #0f172a;
+  line-height: 1.5;
 }
 
 * {
@@ -22,8 +24,8 @@ body {
 }
 
 ::selection {
-  background: rgba(34, 227, 192, 0.3);
-  color: #fff;
+  background: rgba(16, 185, 129, 0.22);
+  color: #0f172a;
 }
 
 @layer components {
