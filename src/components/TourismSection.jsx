@@ -1,0 +1,39 @@
+import SectionShell from './SectionShell';
+import { tourismPlaces } from '../data/siteData';
+
+export default function TourismSection({ t }) {
+  const localizedPlaces = tourismPlaces.map((place, idx) => ({
+    ...place,
+    ...(t.tourism.places[idx] ?? {}),
+  }));
+
+  return (
+    <SectionShell
+      id="tourism"
+      eyebrow={t.tourism.section.eyebrow}
+      title={t.tourism.section.title}
+      subtitle={t.tourism.section.subtitle}
+    >
+      <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+        {localizedPlaces.map((place, idx) => (
+          <article key={place.name} className="group relative overflow-hidden rounded-3xl border border-white/15 bg-white/5 shadow-glass" style={{ animationDelay: `${idx * 70}ms` }}>
+            <div className="relative h-52 overflow-hidden">
+              <img src={place.image} alt={place.name} className="h-full w-full object-cover transition duration-700 group-hover:scale-110" />
+              <div className="absolute inset-0 bg-gradient-to-t from-mountain/85 via-mountain/20 to-transparent" />
+              <span className="absolute left-4 top-4 rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs font-semibold text-white backdrop-blur-xl">
+                {place.badge}
+              </span>
+            </div>
+            <div className="relative p-5">
+              <h3 className="text-lg font-bold text-white">{place.name}</h3>
+              <p className="mt-2 text-sm leading-6 text-white/70">{place.description}</p>
+              <button type="button" className="mt-4 inline-flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/20">
+                {t.tourism.cta} <span className="transition group-hover:translate-x-1">→</span>
+              </button>
+            </div>
+          </article>
+        ))}
+      </div>
+    </SectionShell>
+  );
+}
