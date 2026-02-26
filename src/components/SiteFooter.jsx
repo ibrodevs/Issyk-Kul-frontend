@@ -31,7 +31,7 @@ export default function SiteFooter({ t }) {
   ];
 
   return (
-    <footer className="px-4 pb-8 pt-6 sm:px-6">
+    <footer id='contacts' className="px-4 pb-8 pt-6 sm:px-6">
       <div className="mx-auto max-w-7xl rounded-3xl border border-slate-200 bg-white p-6 shadow-[0_12px_30px_rgba(15,23,42,0.07)]">
         <div className="grid gap-6 md:grid-cols-[1fr_auto_auto] md:items-start">
           <div>

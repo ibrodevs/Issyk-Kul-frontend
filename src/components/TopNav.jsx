@@ -94,11 +94,17 @@ export default function TopNav({ navItems, lang, setLang, t }) {
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, type: 'spring', damping: 20 }}
-          className={`mx-auto flex max-w-7xl items-center justify-between gap-3 rounded-2xl border border-slate-200 px-4 py-3 shadow-[0_10px_30px_rgba(15,23,42,0.08)] backdrop-blur-2xl transition-all duration-500 ${
+          className={`mx-auto flex max-w-7xl items-center justify-between gap-3 rounded-2xl border px-4 py-3 ring-1 transition-all duration-500 ${
             scrolled 
-              ? 'bg-white/90 py-2 shadow-[0_12px_32px_rgba(15,23,42,0.12)]' 
-              : 'bg-white/75'
+              ? 'border-white/70 bg-white/55 py-2 ring-white/60 shadow-[0_14px_40px_rgba(15,23,42,0.14),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-2xl backdrop-saturate-[180%]' 
+              : 'border-white/60 bg-white/45 ring-white/50 shadow-[0_10px_30px_rgba(15,23,42,0.10),inset_0_1px_0_rgba(255,255,255,0.85)] backdrop-blur-2xl backdrop-saturate-[170%]'
           }`}
+          style={{
+            WebkitBackdropFilter: scrolled ? 'blur(22px) saturate(1.8)' : 'blur(20px) saturate(1.7)',
+            backdropFilter: scrolled ? 'blur(22px) saturate(1.8)' : 'blur(20px) saturate(1.7)',
+            backgroundImage:
+              'linear-gradient(180deg, rgba(255,255,255,0.70) 0%, rgba(255,255,255,0.42) 100%)',
+          }}
         >
           {/* Логотип с улучшенной анимацией */}
           <motion.div 
