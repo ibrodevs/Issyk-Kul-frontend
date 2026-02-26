@@ -79,14 +79,14 @@ export default function DepartmentsSection({ t }) {
               placeholder={t.departments.searchPlaceholder}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 pl-11 text-slate-900 placeholder-slate-400 outline-none focus:ring-2 focus:ring-emerald-500"
+              className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 pl-11 text-slate-900 placeholder-slate-400 outline-none focus:ring-2 focus:ring-blue-500"
             />
             <Search className="absolute left-3 top-3.5 h-5 w-5 text-slate-400" />
           </div>
           
           <div className="flex gap-3 text-sm">
             <div className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-slate-700">
-              <span className="font-semibold text-emerald-500">{filteredDepartments.length}</span> {t.departments.statDepartmentsSuffix}
+              <span className="font-semibold text-blue-500">{filteredDepartments.length}</span> {t.departments.statDepartmentsSuffix}
             </div>
             <div className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-slate-700">
               <span className="font-semibold text-sky-500">{t.departments.supportValue}</span> {t.departments.supportLabel}
@@ -104,7 +104,7 @@ export default function DepartmentsSection({ t }) {
               onClick={() => setSearchTerm(cat === t.departments.filters[0] ? '' : cat)}
               className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
                 (cat === t.departments.filters[0] && searchTerm === '') || searchTerm === cat
-                  ? 'bg-gradient-to-r from-emerald-500 to-sky-500 text-white'
+                  ? 'bg-gradient-to-r from-blue-500 to-sky-500 text-white'
                   : 'border border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
               }`}
             >
@@ -129,7 +129,7 @@ export default function DepartmentsSection({ t }) {
             >
               {/* Декоративный фон */}
               <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-sky-500/10"
+                className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-sky-500/10"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: selectedDepartment === index ? 1 : 0 }}
                 transition={{ duration: 0.3 }}
@@ -138,7 +138,7 @@ export default function DepartmentsSection({ t }) {
               {/* Верхняя часть с иконкой и категорией */}
               <div className="relative p-6 pb-4">
                 <div className="flex items-start justify-between">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-50 to-sky-50 text-emerald-600">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-50 to-sky-50 text-blue-600">
                     {(() => {
                       const Icon = departmentIcons[dept.icon] || Mountain;
                       return <Icon className="h-7 w-7" />;
@@ -160,7 +160,7 @@ export default function DepartmentsSection({ t }) {
               <div className="relative border-t border-slate-100 px-6 py-4">
                 <div className="flex items-center gap-3">
                   <div className="relative">
-                    <div className="h-10 w-10 overflow-hidden rounded-full bg-gradient-to-br from-emerald-500 to-sky-500">
+                    <div className="h-10 w-10 overflow-hidden rounded-full bg-gradient-to-br from-blue-500 to-sky-500">
                       {dept.headImage ? (
                         <img src={dept.headImage} alt={dept.head} className="h-full w-full object-cover" />
                       ) : (
@@ -169,7 +169,7 @@ export default function DepartmentsSection({ t }) {
                         </div>
                       )}
                     </div>
-                    <div className="absolute -bottom-1 -right-1 h-3 w-3 rounded-full bg-emerald-400 ring-2 ring-white" />
+                    <div className="absolute -bottom-1 -right-1 h-3 w-3 rounded-full bg-blue-400 ring-2 ring-white" />
                   </div>
                   <div>
                     <p className="text-xs text-slate-500">{t.departments.leaderLabel}</p>
@@ -183,13 +183,13 @@ export default function DepartmentsSection({ t }) {
               <div className="space-y-2 px-6 py-4">
                 <div className="flex items-center gap-3 text-sm">
                   <Phone className="h-4 w-4 text-slate-400" />
-                  <a href={`tel:${dept.phone}`} className="text-slate-700 transition-colors hover:text-emerald-500">
+                  <a href={`tel:${dept.phone}`} className="text-slate-700 transition-colors hover:text-blue-500">
                     {dept.phone}
                   </a>
                 </div>
                 <div className="flex items-center gap-3 text-sm">
                   <Mail className="h-4 w-4 text-slate-400" />
-                  <a href={`mailto:${dept.email}`} className="truncate text-slate-700 transition-colors hover:text-emerald-500">
+                  <a href={`mailto:${dept.email}`} className="truncate text-slate-700 transition-colors hover:text-blue-500">
                     {dept.email}
                   </a>
                 </div>

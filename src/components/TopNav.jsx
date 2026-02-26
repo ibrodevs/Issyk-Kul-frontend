@@ -114,7 +114,7 @@ export default function TopNav({ navItems, lang, setLang, t }) {
           >
             <motion.div 
               variants={logoGlowVariants}
-              className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-emerald-400 to-sky-400 shadow-lg transition-all group-hover:shadow-[0_0_30px_rgba(52,211,153,0.7)]"
+              className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-blue-400 to-sky-400 shadow-lg transition-all group-hover:shadow-[0_0_30px_rgba(59,130,246,0.55)]"
             >
               <Mountain className="h-5 w-5 text-white transform transition-transform group-hover:rotate-12" />
             </motion.div>
@@ -158,7 +158,7 @@ export default function TopNav({ navItems, lang, setLang, t }) {
                 {activeSection === item.href.replace('#', '') && (
                   <motion.div
                     layoutId="activeSection"
-                    className="absolute inset-0 rounded-xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-sky-50"
+                    className="absolute inset-0 rounded-xl border border-blue-200 bg-gradient-to-r from-blue-50 to-sky-50"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.3 }}
@@ -200,7 +200,7 @@ export default function TopNav({ navItems, lang, setLang, t }) {
                   {lang === code && (
                     <motion.div
                       layoutId="activeLang"
-                      className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-sky-500 rounded-lg"
+                      className="absolute inset-0 bg-gradient-to-r from-blue-500 to-sky-500 rounded-lg"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ duration: 0.3 }}
@@ -275,7 +275,7 @@ export default function TopNav({ navItems, lang, setLang, t }) {
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ delay: 0.1 }}
               >
-                <div className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-to-br from-emerald-400 to-sky-400">
+                <div className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-to-br from-blue-400 to-sky-400">
                   <Mountain className="h-6 w-6 text-white" />
                 </div>
                 <div>
@@ -299,7 +299,7 @@ export default function TopNav({ navItems, lang, setLang, t }) {
                 >
                   <div className={`px-4 py-4 text-base font-medium transition-all ${
                     activeSection === item.href.replace('#', '')
-                      ? 'border-l-4 border-emerald-400 bg-gradient-to-r from-emerald-50 to-sky-50 pl-3 text-slate-900'
+                      ? 'border-l-4 border-blue-400 bg-gradient-to-r from-blue-50 to-sky-50 pl-3 text-slate-900'
                       : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900'
                   }`}>
                     {item.label}
@@ -308,7 +308,7 @@ export default function TopNav({ navItems, lang, setLang, t }) {
                   {/* Эффект пульсации для активного пункта */}
                   {activeSection === item.href.replace('#', '') && (
                     <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-emerald-500/0 via-emerald-500/20 to-transparent"
+                      className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-blue-500/20 to-transparent"
                       animate={{
                         x: ['-100%', '200%'],
                       }}
@@ -341,7 +341,7 @@ export default function TopNav({ navItems, lang, setLang, t }) {
                     whileTap={{ scale: 0.95 }}
                     className={`relative overflow-hidden rounded-xl py-3 text-sm font-semibold uppercase transition-all ${
                       lang === code
-                        ? 'bg-gradient-to-r from-emerald-500 to-sky-500 text-white shadow-lg'
+                        ? 'bg-gradient-to-r from-blue-500 to-sky-500 text-white shadow-lg'
                         : 'bg-white text-slate-600 ring-1 ring-slate-200 hover:bg-slate-50 hover:text-slate-900'
                     }`}
                     initial={{ y: 20, opacity: 0 }}

@@ -57,6 +57,7 @@ export default function HeroSection({ t, onVideoLoad }) {
         
         {/* Градиентный оверлей для читаемости текста */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-950/20 via-transparent to-sky-900/20" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.4)_100%)]" />
       </div>
 
@@ -66,7 +67,7 @@ export default function HeroSection({ t, onVideoLoad }) {
           {/* Бейдж */}
           <div className="animate-fade-in-up">
             <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-5 py-2.5 text-sm font-medium uppercase tracking-[0.2em] text-white/90 backdrop-blur-md">
-              <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400 shadow-[0_0_15px_rgba(52,211,153,0.7)]" />
+              <span className="h-2 w-2 animate-pulse rounded-full bg-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.6)]" />
               {t.hero.badge}
             </span>
           </div>
@@ -76,27 +77,27 @@ export default function HeroSection({ t, onVideoLoad }) {
             {t.hero.titleLine1}
             <span className="relative mt-2 block">
               {t.hero.titleLine2}
-              <span className="absolute -left-2 -top-2 h-12 w-12 rounded-full bg-emerald-400/20 blur-xl" />
+              <span className="absolute -left-2 -top-2 h-12 w-12 rounded-full bg-blue-400/20 blur-xl" />
             </span>
-            <span className="block bg-gradient-to-r from-emerald-300 via-sky-300 to-blue-300 bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-r from-blue-300 via-sky-300 to-blue-300 bg-clip-text text-transparent">
               {t.hero.titleLine3}
             </span>
           </h1>
 
           {/* Динамическая линия */}
-          <div className="mt-4 h-1 w-24 animate-expand-line rounded-full bg-gradient-to-r from-emerald-400 via-sky-400 to-blue-400" />
+          <div className="mt-4 h-1 w-24 animate-expand-line rounded-full bg-gradient-to-r from-blue-400 via-sky-400 to-blue-400" />
 
 
           {/* Кнопка действия */}
           <div className="mt-6 animate-fade-in-up animate-delay-300">
-            <button className="group relative overflow-hidden rounded-full bg-gradient-to-r from-emerald-500 to-sky-500 px-8 py-4 text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-emerald-500/25">
+            <button className="group relative overflow-hidden rounded-full bg-gradient-to-r from-blue-500 to-sky-500 px-8 py-4 text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-blue-500/25">
               <span className="relative z-10 flex items-center gap-2 text-sm font-semibold uppercase tracking-wider">
                 {t.hero.cta}
                 <svg className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </span>
-              <span className="absolute inset-0 -z-0 translate-y-full bg-gradient-to-r from-emerald-600 to-sky-600 transition-transform duration-300 group-hover:translate-y-0" />
+              <span className="absolute inset-0 -z-0 translate-y-full bg-gradient-to-r from-blue-600 to-sky-600 transition-transform duration-300 group-hover:translate-y-0" />
             </button>
           </div>
         </div>

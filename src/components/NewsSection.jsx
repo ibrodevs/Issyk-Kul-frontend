@@ -92,7 +92,7 @@ const scrollSlider = (direction) => {
         <motion.div variants={itemVariants} className="relative">
           <div className="mb-4 flex items-center justify-between">
             <h3 className="text-lg font-semibold text-slate-900">
-              <span className="bg-gradient-to-r from-emerald-400 to-sky-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-400 to-sky-400 bg-clip-text text-transparent">
                 {t.news.featuredTitle}
               </span>
             </h3>
@@ -149,7 +149,7 @@ const scrollSlider = (direction) => {
                   <div className="absolute bottom-0 left-0 right-0 p-6">
                     {/* Метки */}
                     <div className="mb-3 flex items-center gap-2">
-                      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500 px-3 py-1 text-xs font-semibold text-white">
+                      <span className="inline-flex items-center gap-1 rounded-full bg-blue-500 px-3 py-1 text-xs font-semibold text-white">
                         <Flame className="h-3.5 w-3.5" />
                         {t.news.hot}
                       </span>
@@ -224,7 +224,7 @@ const scrollSlider = (direction) => {
               {selectedCategory === category.id && (
                 <motion.div
                   layoutId="activeCategory"
-                  className="absolute inset-0 rounded-full bg-gradient-to-r from-emerald-500 to-sky-500"
+                  className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 to-sky-500"
                   transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
                 />
               )}
@@ -313,7 +313,7 @@ const scrollSlider = (direction) => {
                   {/* Кнопка */}
                   <motion.button
                     whileHover={{ x: 5 }}
-                    className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-emerald-400"
+                    className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-blue-400"
                   >
                     {t.news.more}
                     <motion.span
@@ -337,7 +337,7 @@ const scrollSlider = (direction) => {
               whileTap={{ scale: 0.9 }}
               className={`h-10 w-10 rounded-lg ${
                 page === 1
-                  ? 'bg-gradient-to-r from-emerald-500 to-sky-500 text-white'
+                  ? 'bg-gradient-to-r from-blue-500 to-sky-500 text-white'
                   : 'border border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
               }`}
             >

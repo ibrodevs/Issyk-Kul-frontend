@@ -83,7 +83,7 @@ export default function AboutMainPage({ t }) {
             variants={itemVariants}
             className="lg:col-span-7"
           >
-            <div className="group relative h-full overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-900/40 via-teal-900/30 to-sky-900/40 p-8 backdrop-blur-sm">
+            <div className="group relative h-full overflow-hidden rounded-3xl bg-gradient-to-br from-blue-950/45 via-blue-900/30 to-sky-900/40 p-8 backdrop-blur-sm">
               {/* Фоновое изображение */}
               <div className="absolute inset-0 -z-10">
                 <img
@@ -100,7 +100,7 @@ export default function AboutMainPage({ t }) {
                   initial={{ width: 0 }}
                   animate={inView ? { width: '6rem' } : { width: 0 }}
                   transition={{ delay: 0.8, duration: 0.8 }}
-                  className="mb-4 h-1 rounded-full bg-gradient-to-r from-emerald-400 to-sky-400"
+                  className="mb-4 h-1 rounded-full bg-gradient-to-r from-blue-400 to-sky-400"
                 />
                 <h3 className="text-3xl font-bold text-white sm:text-4xl">
                   {featureCard.titleLine1}<br />{featureCard.titleLine2}
@@ -140,7 +140,7 @@ export default function AboutMainPage({ t }) {
                   whileHover={{ scale: 1.02, y: -4 }}
                   className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_10px_24px_rgba(15,23,42,0.05)]"
                 >
-                  <div className="absolute right-0 top-0 h-20 w-20 translate-x-6 -translate-y-6 rounded-full bg-emerald-500/10 blur-2xl group-hover:bg-emerald-500/20 transition-colors" />
+                  <div className="absolute right-0 top-0 h-20 w-20 translate-x-6 -translate-y-6 rounded-full bg-blue-500/10 blur-2xl group-hover:bg-blue-500/20 transition-colors" />
                   
                   <p className="relative text-xs uppercase tracking-wider text-slate-500">{item.label}</p>
                   <p className="relative mt-2 text-3xl font-bold text-slate-900">{item.value}</p>
@@ -175,7 +175,7 @@ export default function AboutMainPage({ t }) {
                 {activeTab === tab.id && (
                   <motion.div
                     layoutId="activeTab"
-                    className="absolute inset-0 rounded-xl bg-gradient-to-r from-emerald-50 to-sky-50"
+                    className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-50 to-sky-50"
                     transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
                   />
                 )}
@@ -280,7 +280,7 @@ export default function AboutMainPage({ t }) {
                   whileHover={{ x: 4 }}
                   className="flex items-center gap-4 rounded-xl border border-slate-200 bg-white p-4 text-left transition-colors hover:bg-slate-50"
                 >
-                  <item.Icon className="h-6 w-6 text-emerald-600" />
+                  <item.Icon className="h-6 w-6 text-blue-600" />
                   <div>
                     <div className="font-medium text-slate-900">{item.text}</div>
                     <div className="text-sm text-slate-600">{item.desc}</div>
