@@ -82,6 +82,28 @@ export async function fetchDepartmentCategories({ lang = 'ru' } = {}) {
   return unpackList(payload);
 }
 
+export async function fetchMediaList({ lang = 'ru', categoryId, type } = {}) {
+  const url = buildUrl('/api/media/', {
+    lang,
+    category_id: categoryId,
+    type,
+  });
+
+  const payload = await fetchJson(url);
+  return unpackList(payload);
+}
+
+export async function fetchMediaById(id, { lang = 'ru' } = {}) {
+  const url = buildUrl(`/api/media/${id}/`, { lang });
+  return fetchJson(url);
+}
+
+export async function fetchMediaCategories({ lang = 'ru' } = {}) {
+  const url = buildUrl('/api/media-categories/', { lang });
+  const payload = await fetchJson(url);
+  return unpackList(payload);
+}
+
 export function formatNewsDate(dateIso, lang = 'ru') {
   if (!dateIso) return '';
 

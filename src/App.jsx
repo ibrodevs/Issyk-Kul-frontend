@@ -21,7 +21,7 @@ function HomePage({ t, lang, onVideoLoad }) {
       <TourismSection t={t} lang={lang} />
       <NewsSection t={t} lang={lang} />
       <DepartmentsSection t={t} lang={lang} />
-      <MediaSection t={t} />
+      <MediaSection t={t} lang={lang} />
     </main>
   );
 }
