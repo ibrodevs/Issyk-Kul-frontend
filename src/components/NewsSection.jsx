@@ -2,53 +2,134 @@
 
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { useState, useRef } from 'react';
-import { ArrowRight, Calendar, ChartColumn, ChevronLeft, ChevronRight, Eye, Flame, Mountain, Newspaper, PartyPopper, Theater } from 'lucide-react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import {
+  ArrowRight,
+  Calendar,
+  ChevronLeft,
+  ChevronRight,
+  Flame,
+  Mountain,
+  Newspaper,
+  PartyPopper,
+  Theater,
+  ChartColumn,
+} from 'lucide-react';
+import { Link } from 'react-router-dom';
 import SectionShell from './SectionShell';
-import { newsData } from '../data/siteData';
+import { fetchNewsCategories, fetchNewsList, formatNewsDate } from '../api/newsApi';
 
-export default function NewsSection({ t }) {
+const uiByLang = {
+  ru: {
+    loading: 'Загрузка новостей...',
+    error: 'Не удалось загрузить новости',
+    empty: 'Новостей пока нет',
+  },
+  en: {
+    loading: 'Loading news...',
+    error: 'Failed to load news',
+    empty: 'No news yet',
+  },
+  kg: {
+    loading: 'Жаңылыктар жүктөлүүдө...',
+    error: 'Жаңылыктарды жүктөө мүмкүн болгон жок',
+    empty: 'Азырынча жаңылык жок',
+  },
+};
+
+function getCategoryIcon(slug = '', name = '') {
+  const token = `${slug} ${name}`.toLowerCase();
+
+  if (token.includes('event') || token.includes('собы') || token.includes('иш-чара')) return PartyPopper;
+  if (token.includes('tour') || token.includes('тур')) return Mountain;
+  if (token.includes('culture') || token.includes('культ') || token.includes('маданият')) return Theater;
+  if (token.includes('econ') || token.includes('эконом')) return ChartColumn;
+
+  return Newspaper;
+}
+
+export default function NewsSection({ t, lang }) {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [hoveredNews, setHoveredNews] = useState(null);
+  const [news, setNews] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const sliderRef = useRef(null);
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
 
-  const localizedNews = newsData.map((item) => ({
-    ...item,
-    ...(t.news.items[item.id] ?? {}),
-  }));
+  const ui = uiByLang[lang] ?? uiByLang.ru;
 
-  const categories = [
-    { id: 'all', label: t.news.filters.all, Icon: Newspaper, count: localizedNews.length },
-    { id: 'events', label: t.news.filters.events, Icon: PartyPopper, count: localizedNews.filter(n => n.category === 'events').length },
-    { id: 'tourism', label: t.news.filters.tourism, Icon: Mountain, count: localizedNews.filter(n => n.category === 'tourism').length },
-    { id: 'culture', label: t.news.filters.culture, Icon: Theater, count: localizedNews.filter(n => n.category === 'culture').length },
-    { id: 'economy', label: t.news.filters.economy, Icon: ChartColumn, count: localizedNews.filter(n => n.category === 'economy').length },
-  ];
+  useEffect(() => {
+    let cancelled = false;
 
-  const getCategoryMeta = (category) => {
-    if (category === 'events') return { Icon: PartyPopper, label: t.news.categoryLabels.events };
-    if (category === 'tourism') return { Icon: Mountain, label: t.news.categoryLabels.tourism };
-    if (category === 'culture') return { Icon: Theater, label: t.news.categoryLabels.culture };
-    return { Icon: ChartColumn, label: t.news.categoryLabels.economy };
-  };
+    const load = async () => {
+      setLoading(true);
+      setError('');
 
-  const featuredNews = localizedNews.filter(news => news.isFeatured);
-  const latestNews = localizedNews.filter(news => !news.isFeatured);
+      try {
+        const [newsList, categoryList] = await Promise.all([
+          fetchNewsList({ lang }),
+          fetchNewsCategories({ lang }),
+        ]);
 
-const scrollSlider = (direction) => {
-  if (sliderRef.current) {
-    const scrollAmount = direction === 'left' ? -400 : 400;
+        if (!cancelled) {
+          setNews(newsList);
+          setCategories(categoryList.sort((a, b) => a.order - b.order));
+          setSelectedCategory('all');
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setError(err instanceof Error ? err.message : 'Unknown error');
+          setNews([]);
+          setCategories([]);
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    };
 
-    sliderRef.current.scrollBy({
-      left: scrollAmount,
-      behavior: 'smooth',
-    });
-  }
-};
+    load();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [lang]);
+
+  const sortedNews = useMemo(
+    () => [...news].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()),
+    [news],
+  );
+
+  const featuredNews = useMemo(() => sortedNews.filter((item) => item.is_main), [sortedNews]);
+
+  const latestNews = useMemo(
+    () =>
+      sortedNews.filter((item) => {
+        if (item.is_main) return false;
+        if (selectedCategory === 'all') return true;
+        return String(item.category?.id) === String(selectedCategory);
+      }),
+    [selectedCategory, sortedNews],
+  );
+
+  const categoryOptions = useMemo(
+    () => [
+      { id: 'all', label: t.news.filters.all, Icon: Newspaper, count: sortedNews.filter((item) => !item.is_main).length },
+      ...categories.map((category) => ({
+        id: String(category.id),
+        label: category.name,
+        Icon: getCategoryIcon(category.slug, category.name),
+        count: sortedNews.filter((item) => !item.is_main && item.category?.id === category.id).length,
+      })),
+    ],
+    [categories, sortedNews, t.news.filters.all],
+  );
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -74,13 +155,17 @@ const scrollSlider = (direction) => {
     },
   };
 
+  const scrollSlider = (direction) => {
+    if (!sliderRef.current) return;
+
+    sliderRef.current.scrollBy({
+      left: direction === 'left' ? -400 : 400,
+      behavior: 'smooth',
+    });
+  };
+
   return (
-    <SectionShell
-      id="news"
-      eyebrow={t.news.section.eyebrow}
-      title={t.news.section.title}
-      subtitle={t.news.section.subtitle}
-    >
+    <SectionShell id="news" eyebrow={t.news.section.eyebrow} title={t.news.section.title} subtitle={t.news.section.subtitle}>
       <motion.div
         ref={ref}
         variants={containerVariants}
@@ -88,263 +173,199 @@ const scrollSlider = (direction) => {
         animate={inView ? 'visible' : 'hidden'}
         className="space-y-10"
       >
-        {/* Featured слайдер */}
-        <motion.div variants={itemVariants} className="relative">
-          <div className="mb-4 flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-slate-900">
-              <span className="bg-gradient-to-r from-blue-400 to-sky-400 bg-clip-text text-transparent">
-                {t.news.featuredTitle}
-              </span>
-            </h3>
-            <div className="flex gap-2">
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => scrollSlider('left')}
-                className="rounded-full border border-slate-200 bg-white p-2 text-slate-500 hover:bg-slate-50 hover:text-slate-900"
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => scrollSlider('right')}
-                className="rounded-full border border-slate-200 bg-white p-2 text-slate-500 hover:bg-slate-50 hover:text-slate-900"
-              >
-                <ChevronRight className="h-4 w-4" />
-              </motion.button>
-            </div>
-          </div>
+        {loading && <p className="text-sm text-slate-600">{ui.loading}</p>}
+        {!loading && error && <p className="text-sm text-red-600">{ui.error}</p>}
 
-          {/* Слайдер */}
-          <div
-            ref={sliderRef}
-            className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide snap-x"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
-            {featuredNews.map((news, index) => (
-              <motion.div
-                key={news.id}
-                initial={{ opacity: 0, x: 50 }}
-                animate={inView ? { opacity: 1, x: 0 } : {}}
-                transition={{ delay: index * 0.1 }}
-                className="relative min-w-[350px] flex-shrink-0 snap-start md:min-w-[450px]"
-                onHoverStart={() => setHoveredNews(news.id)}
-                onHoverEnd={() => setHoveredNews(null)}
-              >
-                <div className="group relative h-80 overflow-hidden rounded-2xl">
-                  {/* Изображение */}
-                  <motion.img
-                    src={news.image}
-                    alt={news.title}
-                    className="h-full w-full object-cover"
-                    animate={{ scale: hoveredNews === news.id ? 1.1 : 1 }}
-                    transition={{ duration: 0.4 }}
-                  />
-                  
-                  {/* Градиент */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-                  
-                  {/* Контент */}
-                  <div className="absolute bottom-0 left-0 right-0 p-6">
-                    {/* Метки */}
-                    <div className="mb-3 flex items-center gap-2">
-                      <span className="inline-flex items-center gap-1 rounded-full bg-blue-500 px-3 py-1 text-xs font-semibold text-white">
-                        <Flame className="h-3.5 w-3.5" />
-                        {t.news.hot}
-                      </span>
-                      {(() => {
-                        const { Icon, label } = getCategoryMeta(news.category);
-                        return (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-white/20 px-3 py-1 text-xs text-white backdrop-blur-sm">
-                            <Icon className="h-3.5 w-3.5" />
-                            {label}
-                          </span>
-                        );
-                      })()}
-                    </div>
-                    
-                    {/* Заголовок */}
-                    <h4 className="text-xl font-bold text-white line-clamp-2">
-                      {news.title}
-                    </h4>
-                    
-                    {/* Описание */}
-                    <p className="mt-2 text-sm text-white/70 line-clamp-2">
-                      {news.description}
-                    </p>
-                    
-                    {/* Мета-информация */}
-                    <div className="mt-4 flex items-center justify-between">
-                      <div className="flex items-center gap-3 text-xs text-white/50">
-                        <span className="inline-flex items-center gap-1">
-                          <Calendar className="h-3.5 w-3.5" />
-                          {news.date}
-                        </span>
-                      </div>
-                      
-                      <motion.button
-                        whileHover={{ x: 5 }}
-                        className="text-sm font-semibold text-white"
-                      >
-                        <span className="inline-flex items-center gap-1">
-                          {t.news.read}
-                          <ArrowRight className="h-4 w-4" />
-                        </span>
-                      </motion.button>
-                    </div>
+        {!loading && !error && (
+          <>
+            {featuredNews.length > 0 && (
+              <motion.div variants={itemVariants} className="relative">
+                <div className="mb-4 flex items-center justify-between">
+                  <h3 className="text-lg font-semibold text-slate-900">
+                    <span className="bg-gradient-to-r from-blue-400 to-sky-400 bg-clip-text text-transparent">
+                      {t.news.featuredTitle}
+                    </span>
+                  </h3>
+                  <div className="flex gap-2">
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      onClick={() => scrollSlider('left')}
+                      className="rounded-full border border-slate-200 bg-white p-2 text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+                    >
+                      <ChevronLeft className="h-4 w-4" />
+                    </motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      onClick={() => scrollSlider('right')}
+                      className="rounded-full border border-slate-200 bg-white p-2 text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+                    >
+                      <ChevronRight className="h-4 w-4" />
+                    </motion.button>
                   </div>
+                </div>
 
-                  {/* Блик при наведении */}
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
-                    animate={{ x: hoveredNews === news.id ? '100%' : '-100%' }}
-                    transition={{ duration: 0.8 }}
-                  />
+                <div
+                  ref={sliderRef}
+                  className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide snap-x"
+                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                >
+                  {featuredNews.map((newsItem, index) => {
+                    const CategoryIcon = getCategoryIcon(newsItem.category?.slug, newsItem.category?.name);
+
+                    return (
+                      <motion.div
+                        key={newsItem.id}
+                        initial={{ opacity: 0, x: 50 }}
+                        animate={inView ? { opacity: 1, x: 0 } : {}}
+                        transition={{ delay: index * 0.1 }}
+                        className="relative min-w-[350px] flex-shrink-0 snap-start md:min-w-[450px]"
+                        onHoverStart={() => setHoveredNews(newsItem.id)}
+                        onHoverEnd={() => setHoveredNews(null)}
+                      >
+                        <div className="group relative h-80 overflow-hidden rounded-2xl">
+                          <motion.img
+                            src={newsItem.image}
+                            alt={newsItem.title}
+                            className="h-full w-full object-cover"
+                            animate={{ scale: hoveredNews === newsItem.id ? 1.1 : 1 }}
+                            transition={{ duration: 0.4 }}
+                          />
+
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+
+                          <div className="absolute bottom-0 left-0 right-0 p-6">
+                            <div className="mb-3 flex items-center gap-2">
+                              {newsItem.is_hot && (
+                                <span className="inline-flex items-center gap-1 rounded-full bg-blue-500 px-3 py-1 text-xs font-semibold text-white">
+                                  <Flame className="h-3.5 w-3.5" />
+                                  {t.news.hot}
+                                </span>
+                              )}
+                              <span className="inline-flex items-center gap-1 rounded-full bg-white/20 px-3 py-1 text-xs text-white backdrop-blur-sm">
+                                <CategoryIcon className="h-3.5 w-3.5" />
+                                {newsItem.category?.name}
+                              </span>
+                            </div>
+
+                            <h4 className="text-xl font-bold text-white line-clamp-2">{newsItem.title}</h4>
+
+                            <div
+                              className="mt-2 text-sm text-white/70 line-clamp-2"
+                              dangerouslySetInnerHTML={{ __html: newsItem.short_description ?? '' }}
+                            />
+
+                            <div className="mt-4 flex items-center justify-between">
+                              <span className="inline-flex items-center gap-1 text-xs text-white/50">
+                                <Calendar className="h-3.5 w-3.5" />
+                                {formatNewsDate(newsItem.date, lang)}
+                              </span>
+
+                              <Link
+                                to={`/news/${newsItem.id}`}
+                                className="inline-flex items-center gap-1 text-sm font-semibold text-white"
+                              >
+                                {t.news.read}
+                                <ArrowRight className="h-4 w-4" />
+                              </Link>
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
                 </div>
               </motion.div>
-            ))}
-          </div>
-        </motion.div>
+            )}
 
-        {/* Категории */}
-        <motion.div variants={itemVariants} className="flex flex-wrap gap-2">
-          {categories.map((category) => (
-            <motion.button
-              key={category.id}
-              onClick={() => setSelectedCategory(category.id)}
-              whileHover={{ y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              className={`relative overflow-hidden rounded-full px-5 py-2.5 text-sm font-medium transition-all ${
-                selectedCategory === category.id
-                  ? 'text-slate-900'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              {selectedCategory === category.id && (
-                <motion.div
-                  layoutId="activeCategory"
-                  className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 to-sky-500"
-                  transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
-                />
-              )}
-              <span className="relative z-10 flex items-center gap-2">
-                <category.Icon className="h-4 w-4" />
-                <span>{category.label}</span>
-                <span className="rounded-full bg-slate-200/80 px-2 py-0.5 text-xs">
-                  {category.count}
-                </span>
-              </span>
-            </motion.button>
-          ))}
-        </motion.div>
-
-        {/* Сетка новостей */}
-        <motion.div variants={containerVariants} className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {latestNews
-            .filter(news => selectedCategory === 'all' || news.category === selectedCategory)
-            .map((news, index) => (
-              <motion.article
-                key={news.id}
-                variants={itemVariants}
-                whileHover={{ y: -5 }}
-              className="group relative overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_10px_24px_rgba(15,23,42,0.05)]"
-              >
-                {/* Изображение */}
-                <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={news.image}
-                    alt={news.title}
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  
-                  {/* Категория */}
-                  <div className="absolute left-3 top-3">
-                    {(() => {
-                      const { Icon, label } = getCategoryMeta(news.category);
-                      return (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-black/60 px-3 py-1 text-xs text-white backdrop-blur-sm">
-                          <Icon className="h-3.5 w-3.5" />
-                          {label}
-                        </span>
-                      );
-                    })()}
-                  </div>
-                </div>
-
-                {/* Контент */}
-                <div className="p-5">
-                  {/* Дата и просмотры */}
-                  <div className="flex items-center gap-3 text-xs text-slate-500">
-                    <span className="inline-flex items-center gap-1">
-                      <Calendar className="h-3.5 w-3.5" />
-                      {news.date}
-                    </span>
-                    <span className="inline-flex items-center gap-1">
-                      <Eye className="h-3.5 w-3.5" />
-                      {news.views}
-                    </span>
-                  </div>
-
-                  {/* Заголовок */}
-                  <h4 className="mt-2 text-lg font-semibold text-slate-900 line-clamp-2">
-                    {news.title}
-                  </h4>
-
-                  {/* Описание */}
-                  <p className="mt-2 text-sm leading-6 text-slate-600 line-clamp-2">
-                    {news.description}
-                  </p>
-
-                  {/* Теги */}
-                  {news.tags && (
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      {news.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-slate-500"
-                        >
-                          #{tag}
-                        </span>
-                      ))}
-                    </div>
+            <motion.div variants={itemVariants} className="flex flex-wrap gap-2">
+              {categoryOptions.map((category) => (
+                <motion.button
+                  key={category.id}
+                  onClick={() => setSelectedCategory(category.id)}
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  className={`relative overflow-hidden rounded-full px-5 py-2.5 text-sm font-medium transition-all ${
+                    selectedCategory === category.id ? 'text-white' : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  {selectedCategory === category.id && (
+                    <motion.div
+                      layoutId="activeCategory"
+                      className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 to-sky-500"
+                      transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+                    />
                   )}
 
-                  {/* Кнопка */}
-                  <motion.button
-                    whileHover={{ x: 5 }}
-                    className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-blue-400"
-                  >
-                    {t.news.more}
-                    <motion.span
-                      animate={{ x: [0, 3, 0] }}
-                      transition={{ duration: 1.5, repeat: Infinity }}
-                    >
-                      <ArrowRight className="h-4 w-4" />
-                    </motion.span>
-                  </motion.button>
-                </div>
-              </motion.article>
-            ))}
-        </motion.div>
+                  <span className="relative z-10 flex items-center gap-2">
+                    <category.Icon className="h-4 w-4" />
+                    <span>{category.label}</span>
+                    <span className="rounded-full bg-slate-200/80 px-2 py-0.5 text-xs text-slate-700">{category.count}</span>
+                  </span>
+                </motion.button>
+              ))}
+            </motion.div>
 
-        {/* Пагинация */}
-        <motion.div variants={itemVariants} className="flex justify-center gap-2">
-          {[1, 2, 3, 4, 5].map((page) => (
-            <motion.button
-              key={page}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className={`h-10 w-10 rounded-lg ${
-                page === 1
-                  ? 'bg-gradient-to-r from-blue-500 to-sky-500 text-white'
-                  : 'border border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
-              }`}
-            >
-              {page}
-            </motion.button>
-          ))}
-        </motion.div>
+            {latestNews.length === 0 ? (
+              <motion.p variants={itemVariants} className="text-sm text-slate-600">
+                {ui.empty}
+              </motion.p>
+            ) : (
+              <motion.div variants={containerVariants} className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {latestNews.map((newsItem) => {
+                  const CategoryIcon = getCategoryIcon(newsItem.category?.slug, newsItem.category?.name);
+
+                  return (
+                    <motion.article
+                      key={newsItem.id}
+                      variants={itemVariants}
+                      whileHover={{ y: -5 }}
+                      className="group relative overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_10px_24px_rgba(15,23,42,0.05)]"
+                    >
+                      <div className="relative h-48 overflow-hidden">
+                        <img
+                          src={newsItem.image}
+                          alt={newsItem.title}
+                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        />
+
+                        <div className="absolute left-3 top-3">
+                          <span className="inline-flex items-center gap-1 rounded-full bg-black/60 px-3 py-1 text-xs text-white backdrop-blur-sm">
+                            <CategoryIcon className="h-3.5 w-3.5" />
+                            {newsItem.category?.name}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="p-5">
+                        <span className="inline-flex items-center gap-1 text-xs text-slate-500">
+                          <Calendar className="h-3.5 w-3.5" />
+                          {formatNewsDate(newsItem.date, lang)}
+                        </span>
+
+                        <h4 className="mt-2 text-lg font-semibold text-slate-900 line-clamp-2">{newsItem.title}</h4>
+
+                        <div
+                          className="mt-2 text-sm leading-6 text-slate-600 line-clamp-2"
+                          dangerouslySetInnerHTML={{ __html: newsItem.short_description ?? '' }}
+                        />
+
+                        <Link
+                          to={`/news/${newsItem.id}`}
+                          className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-blue-500"
+                        >
+                          {t.news.more}
+                          <ArrowRight className="h-4 w-4" />
+                        </Link>
+                      </div>
+                    </motion.article>
+                  );
+                })}
+              </motion.div>
+            )}
+          </>
+        )}
       </motion.div>
     </SectionShell>
   );

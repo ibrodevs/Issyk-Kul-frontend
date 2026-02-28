@@ -4,6 +4,13 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, Mountain, X } from 'lucide-react';
 
+const getSectionIdFromHref = (href) => {
+  if (!href) return '';
+  const hashIndex = href.indexOf('#');
+  if (hashIndex === -1) return '';
+  return href.slice(hashIndex + 1);
+};
+
 export default function TopNav({ navItems, lang, setLang, t }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -21,7 +28,7 @@ export default function TopNav({ navItems, lang, setLang, t }) {
 
   // Активная секция при скролле
   useEffect(() => {
-    const sections = navItems.map(item => item.href.replace('#', ''));
+    const sections = navItems.map((item) => getSectionIdFromHref(item.href)).filter(Boolean);
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -147,7 +154,7 @@ export default function TopNav({ navItems, lang, setLang, t }) {
                 whileTap={{ y: 0 }}
               >
                 <span className={`relative z-10 transition-colors ${
-                  activeSection === item.href.replace('#', '')
+                  activeSection === getSectionIdFromHref(item.href)
                     ? 'text-slate-900'
                     : 'text-slate-600 hover:text-slate-900'
                 }`}>
@@ -155,7 +162,7 @@ export default function TopNav({ navItems, lang, setLang, t }) {
                 </span>
                 
                 {/* Индикатор активной секции */}
-                {activeSection === item.href.replace('#', '') && (
+                {activeSection === getSectionIdFromHref(item.href) && (
                   <motion.div
                     layoutId="activeSection"
                     className="absolute inset-0 rounded-xl border border-blue-200 bg-gradient-to-r from-blue-50 to-sky-50"
@@ -166,7 +173,7 @@ export default function TopNav({ navItems, lang, setLang, t }) {
                 )}
                 
                 {/* Эффект при наведении */}
-                {hoveredItem === index && activeSection !== item.href.replace('#', '') && (
+                {hoveredItem === index && activeSection !== getSectionIdFromHref(item.href) && (
                   <motion.div
                     className="absolute inset-0 rounded-xl bg-slate-100"
                     initial={{ opacity: 0 }}
@@ -298,7 +305,7 @@ export default function TopNav({ navItems, lang, setLang, t }) {
                   whileTap={{ scale: 0.98 }}
                 >
                   <div className={`px-4 py-4 text-base font-medium transition-all ${
-                    activeSection === item.href.replace('#', '')
+                    activeSection === getSectionIdFromHref(item.href)
                       ? 'border-l-4 border-blue-400 bg-gradient-to-r from-blue-50 to-sky-50 pl-3 text-slate-900'
                       : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900'
                   }`}>
@@ -306,7 +313,7 @@ export default function TopNav({ navItems, lang, setLang, t }) {
                   </div>
                   
                   {/* Эффект пульсации для активного пункта */}
-                  {activeSection === item.href.replace('#', '') && (
+                  {activeSection === getSectionIdFromHref(item.href) && (
                     <motion.div
                       className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-blue-500/20 to-transparent"
                       animate={{

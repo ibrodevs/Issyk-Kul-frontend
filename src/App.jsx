@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import TopNav from './components/TopNav';
 import HeroSection from './components/HeroSection';
 import AboutMainPage from './components/AboutMainPage';
@@ -7,25 +8,62 @@ import NewsSection from './components/NewsSection';
 import DepartmentsSection from './components/DepartmentsSection';
 import MediaSection from './components/MediaSection';
 import SiteFooter from './components/SiteFooter';
+import NewsDetailsPage from './components/NewsDetailsPage';
+import SightDetailsPage from './components/SightDetailsPage';
 import { getDictionary } from './i18n';
 import { LoaderCircle, Mountain } from 'lucide-react';
 
+function HomePage({ t, lang, onVideoLoad }) {
+  return (
+    <main className="transition-opacity duration-500 opacity-100">
+      <HeroSection t={t} onVideoLoad={onVideoLoad} />
+      <AboutMainPage t={t} />
+      <TourismSection t={t} lang={lang} />
+      <NewsSection t={t} lang={lang} />
+      <DepartmentsSection t={t} lang={lang} />
+      <MediaSection t={t} />
+    </main>
+  );
+}
+
 export default function App() {
+  const location = useLocation();
+  const isHome = location.pathname === '/';
+
   const [lang, setLang] = useState('ru');
-  const [heroVideoLoaded, setHeroVideoLoaded] = useState(false);
-  const [showPreloader, setShowPreloader] = useState(true);
+  const [heroVideoLoaded, setHeroVideoLoaded] = useState(!isHome);
+  const [showPreloader, setShowPreloader] = useState(isHome);
   const mountainLayerRef = useRef(null);
   const t = getDictionary(lang);
 
   useEffect(() => {
+    if (!isHome) {
+      setHeroVideoLoaded(true);
+      setShowPreloader(false);
+      return;
+    }
+
+    if (!heroVideoLoaded) {
+      setShowPreloader(true);
+    }
+  }, [isHome, heroVideoLoaded]);
+
+  useEffect(() => {
+    if (!isHome || heroVideoLoaded) return;
+
     const fallbackTimer = window.setTimeout(() => {
       setHeroVideoLoaded(true);
     }, 8000);
 
     return () => window.clearTimeout(fallbackTimer);
-  }, []);
+  }, [heroVideoLoaded, isHome]);
 
   useEffect(() => {
+    if (!isHome) {
+      document.body.style.overflow = '';
+      return;
+    }
+
     if (!heroVideoLoaded) {
       document.body.style.overflow = 'hidden';
       return;
@@ -41,7 +79,7 @@ export default function App() {
       window.clearTimeout(exitTimer);
       document.body.style.overflow = '';
     };
-  }, [heroVideoLoaded]);
+  }, [heroVideoLoaded, isHome]);
 
   useEffect(() => {
     let rafId = 0;
@@ -66,13 +104,15 @@ export default function App() {
     };
   }, []);
 
+  const sectionPath = (hash) => (isHome ? hash : `/${hash}`);
+
   const navItems = [
-    { href: '#about', label: t.nav.about },
-    { href: '#tourism', label: t.nav.tourism },
-    { href: '#news', label: t.nav.news },
-    { href: '#departments', label: t.nav.departments },
-    { href: '#media', label: t.nav.media },
-    { href: '#contacts', label: t.nav.contacts },
+    { href: sectionPath('#about'), label: t.nav.about },
+    { href: sectionPath('#tourism'), label: t.nav.tourism },
+    { href: sectionPath('#news'), label: t.nav.news },
+    { href: sectionPath('#departments'), label: t.nav.departments },
+    { href: sectionPath('#media'), label: t.nav.media },
+    { href: sectionPath('#contacts'), label: t.nav.contacts },
   ];
 
   return (
@@ -97,7 +137,7 @@ export default function App() {
         </div>
       </div>
 
-      {showPreloader && (
+      {isHome && showPreloader && (
         <div
           className={`fixed inset-0 z-[100] flex items-center justify-center bg-white transition-opacity duration-500 ${
             heroVideoLoaded ? 'pointer-events-none opacity-0' : 'opacity-100'
@@ -118,15 +158,14 @@ export default function App() {
       )}
 
       <TopNav navItems={navItems} lang={lang} setLang={setLang} t={t} />
-      <main className={`transition-opacity duration-500 ${heroVideoLoaded ? 'opacity-100' : 'opacity-0'}`}>
-        <HeroSection t={t} onVideoLoad={() => setHeroVideoLoaded(true)} />
-        <AboutMainPage t={t} />
-        <TourismSection t={t} />
-        <NewsSection t={t} />
-        <DepartmentsSection t={t} />
-        <MediaSection t={t} />
-      </main>
-      <SiteFooter t={t} />
+
+      <Routes>
+        <Route path="/" element={<HomePage t={t} lang={lang} onVideoLoad={() => setHeroVideoLoaded(true)} />} />
+        <Route path="/news/:id" element={<NewsDetailsPage t={t} lang={lang} />} />
+        <Route path="/sights/:id" element={<SightDetailsPage lang={lang} />} />
+      </Routes>
+
+      <SiteFooter t={t} linkPrefix={isHome ? '' : '/'} />
     </div>
   );
 }

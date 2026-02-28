@@ -1,6 +1,6 @@
 import { Instagram, Send, Waves, Youtube } from 'lucide-react';
 
-export default function SiteFooter({ t }) {
+export default function SiteFooter({ t, linkPrefix = '' }) {
   const socials = [
     {
       label: 'Telegram',
@@ -23,11 +23,11 @@ export default function SiteFooter({ t }) {
   ];
 
   const links = [
-    { label: t.nav.about, href: '#about' },
-    { label: t.nav.tourism, href: '#tourism' },
-    { label: t.nav.news, href: '#news' },
-    { label: t.nav.departments, href: '#departments' },
-    { label: t.nav.contacts, href: '#contacts' },
+    { label: t.nav.about, href: `${linkPrefix}#about` },
+    { label: t.nav.tourism, href: `${linkPrefix}#tourism` },
+    { label: t.nav.news, href: `${linkPrefix}#news` },
+    { label: t.nav.departments, href: `${linkPrefix}#departments` },
+    { label: t.nav.contacts, href: `${linkPrefix}#contacts` },
   ];
 
   return (
