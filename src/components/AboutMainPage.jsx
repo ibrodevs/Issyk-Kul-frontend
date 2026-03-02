@@ -240,7 +240,7 @@ export default function AboutMainPage({ t }) {
 
         {/* Карта и действия */}
         <motion.div variants={itemVariants} className="grid gap-6 md:grid-cols-2">
-          <div className="relative h-64 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_10px_24px_rgba(15,23,42,0.05)]">
+          <div className="relative h-80 md:h-96 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_10px_24px_rgba(15,23,42,0.05)]">
             <iframe
               title={t.about.map.title}
               src="https://www.openstreetmap.org/export/embed.html?bbox=75.6%2C42.1%2C79.9%2C43.4&layer=mapnik&marker=42.45%2C77.28"
