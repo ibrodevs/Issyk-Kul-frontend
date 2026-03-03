@@ -1,10 +1,18 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function HeroSection({ t, onVideoLoad }) {
   const iframeRef = useRef(null);
   const didNotifyRef = useRef(false);
+  const [isVideoReady, setIsVideoReady] = useState(false);
 
   useEffect(() => {
+    const markVideoReady = () => {
+      if (didNotifyRef.current) return;
+      didNotifyRef.current = true;
+      setIsVideoReady(true);
+      onVideoLoad?.();
+    };
+
     const handleMessage = (event) => {
       if (!event.origin.includes('vimeo.com')) return;
 
@@ -18,19 +26,21 @@ export default function HeroSection({ t, onVideoLoad }) {
       if (!payload || payload.player_id !== 'hero-vimeo') return;
 
       if (payload.event === 'ready' && iframeRef.current?.contentWindow) {
+        ['play', 'playing'].forEach((eventName) => {
+          iframeRef.current.contentWindow.postMessage(
+            JSON.stringify({ method: 'addEventListener', value: eventName }),
+            '*'
+          );
+        });
+
         iframeRef.current.contentWindow.postMessage(
-          JSON.stringify({ method: 'addEventListener', value: 'play' }),
-          '*'
-        );
-        iframeRef.current.contentWindow.postMessage(
-          JSON.stringify({ method: 'addEventListener', value: 'playing' }),
+          JSON.stringify({ method: 'play' }),
           '*'
         );
       }
 
-      if ((payload.event === 'play' || payload.event === 'playing') && !didNotifyRef.current) {
-        didNotifyRef.current = true;
-        onVideoLoad?.();
+      if (payload.event === 'play' || payload.event === 'playing') {
+        markVideoReady();
       }
     };
 
@@ -38,15 +48,33 @@ export default function HeroSection({ t, onVideoLoad }) {
     return () => window.removeEventListener('message', handleMessage);
   }, [onVideoLoad]);
 
+  useEffect(() => {
+    const fallbackTimer = window.setTimeout(() => {
+      setIsVideoReady(true);
+    }, 8000);
+
+    return () => window.clearTimeout(fallbackTimer);
+  }, []);
+
   return (
-    <section className="relative h-screen w-full overflow-hidden -mt-[var(--nav-height,80px)]">
+    <section className="relative h-screen w-full overflow-hidden -mt-[calc(var(--nav-height,80px)+1px)]">
       {/* Видео фон */}
       <div className="absolute inset-0">
+        <img
+          src="/issyk-kul-nauryz-2-1.jpg"
+          alt=""
+          aria-hidden="true"
+          className={`absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-1000 ease-out ${
+            isVideoReady ? 'opacity-0' : 'opacity-100'
+          }`}
+        />
         <iframe
           ref={iframeRef}
           id="hero-vimeo"
           src="https://player.vimeo.com/video/185290450?background=1&autoplay=1&muted=1&loop=1&transparent=0&api=1&player_id=hero-vimeo"
-          className="absolute left-1/2 top-1/2 h-[56.25vw] min-h-full w-[177.77777778vh] min-w-full -translate-x-1/2 -translate-y-1/2"
+          className={`absolute left-1/2 top-1/2 h-[56.25vw] min-h-full w-[177.77777778vh] min-w-full -translate-x-1/2 -translate-y-1/2 transition-opacity duration-1000 ease-out ${
+            isVideoReady ? 'opacity-100' : 'opacity-0'
+          }`}
           style={{ 
             pointerEvents: 'none',
             filter: 'brightness(0.7) saturate(1.2)'

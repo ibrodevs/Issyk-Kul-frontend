@@ -11,12 +11,11 @@ import SiteFooter from './components/SiteFooter';
 import NewsDetailsPage from './components/NewsDetailsPage';
 import SightDetailsPage from './components/SightDetailsPage';
 import { getDictionary } from './i18n';
-import { LoaderCircle, Mountain } from 'lucide-react';
 
-function HomePage({ t, lang, onVideoLoad }) {
+function HomePage({ t, lang }) {
   return (
     <main className="transition-opacity duration-500 opacity-100">
-      <HeroSection t={t} onVideoLoad={onVideoLoad} />
+      <HeroSection t={t} />
       <AboutMainPage t={t} />
       <TourismSection t={t} lang={lang} />
       <NewsSection t={t} lang={lang} />
@@ -31,55 +30,8 @@ export default function App() {
   const isHome = location.pathname === '/';
 
   const [lang, setLang] = useState('ru');
-  const [heroVideoLoaded, setHeroVideoLoaded] = useState(!isHome);
-  const [showPreloader, setShowPreloader] = useState(isHome);
   const mountainLayerRef = useRef(null);
   const t = getDictionary(lang);
-
-  useEffect(() => {
-    if (!isHome) {
-      setHeroVideoLoaded(true);
-      setShowPreloader(false);
-      return;
-    }
-
-    if (!heroVideoLoaded) {
-      setShowPreloader(true);
-    }
-  }, [isHome, heroVideoLoaded]);
-
-  useEffect(() => {
-    if (!isHome || heroVideoLoaded) return;
-
-    const fallbackTimer = window.setTimeout(() => {
-      setHeroVideoLoaded(true);
-    }, 8000);
-
-    return () => window.clearTimeout(fallbackTimer);
-  }, [heroVideoLoaded, isHome]);
-
-  useEffect(() => {
-    if (!isHome) {
-      document.body.style.overflow = '';
-      return;
-    }
-
-    if (!heroVideoLoaded) {
-      document.body.style.overflow = 'hidden';
-      return;
-    }
-
-    const exitTimer = window.setTimeout(() => {
-      setShowPreloader(false);
-    }, 450);
-
-    document.body.style.overflow = '';
-
-    return () => {
-      window.clearTimeout(exitTimer);
-      document.body.style.overflow = '';
-    };
-  }, [heroVideoLoaded, isHome]);
 
   useEffect(() => {
     let rafId = 0;
@@ -137,30 +89,10 @@ export default function App() {
         </div>
       </div>
 
-      {isHome && showPreloader && (
-        <div
-          className={`fixed inset-0 z-[100] flex items-center justify-center bg-white transition-opacity duration-500 ${
-            heroVideoLoaded ? 'pointer-events-none opacity-0' : 'opacity-100'
-          }`}
-          aria-hidden={heroVideoLoaded}
-        >
-          <div className="flex flex-col items-center gap-4 text-center">
-            <div className="relative grid h-16 w-16 place-items-center rounded-2xl border border-slate-200 bg-white shadow-sm">
-              <Mountain className="h-7 w-7 text-blue-500" />
-              <div className="absolute -inset-3 rounded-3xl bg-blue-400/15 blur-xl" />
-            </div>
-            <div className="flex items-center gap-2 text-sm text-slate-600">
-              <LoaderCircle className="h-4 w-4 animate-spin text-sky-300" />
-              <span>{lang === 'en' ? 'Loading...' : lang === 'kg' ? 'Жүктөлүүдө...' : 'Загрузка...'}</span>
-            </div>
-          </div>
-        </div>
-      )}
-
       <TopNav navItems={navItems} lang={lang} setLang={setLang} t={t} />
 
       <Routes>
-        <Route path="/" element={<HomePage t={t} lang={lang} onVideoLoad={() => setHeroVideoLoaded(true)} />} />
+        <Route path="/" element={<HomePage t={t} lang={lang} />} />
         <Route path="/news/:id" element={<NewsDetailsPage t={t} lang={lang} />} />
         <Route path="/sights/:id" element={<SightDetailsPage lang={lang} />} />
       </Routes>
