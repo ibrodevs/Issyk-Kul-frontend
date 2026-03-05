@@ -78,7 +78,16 @@ export default function SiteFooter({ t, linkPrefix = '' }) {
         </div>
 
         <div className="mt-6 flex flex-col gap-3 border-t border-slate-200 pt-4 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
-          <a href="#" className="transition hover:text-slate-700">{t.footer.privacy}</a>
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
+            <a href="#" className="transition hover:text-slate-700">{t.footer.privacy}</a>
+            <a
+              href="/phone_journal.docx"
+              download
+              className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:border-slate-400 hover:bg-slate-100 hover:text-slate-900"
+            >
+              {t.footer.contactsDocxButton}
+            </a>
+          </div>
           <p>{t.footer.copyright}</p>
         </div>
       </div>

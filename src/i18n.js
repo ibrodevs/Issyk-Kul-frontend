@@ -256,6 +256,7 @@ export const dictionary = {
       description:
         'Новости, департаменты, туризм, проекты развития и цифровые сервисы для жителей и гостей региона.',
       privacy: 'Политика конфиденциальности',
+      contactsDocxButton: 'Контакты аппарата (DOCX)',
       copyright: '© 2026 Иссык-Кульская область',
     },
   },
@@ -516,6 +517,7 @@ export const dictionary = {
       description:
         'News, departments, tourism, development projects and digital services for residents and visitors.',
       privacy: 'Privacy policy',
+      contactsDocxButton: 'Office contacts (DOCX)',
       copyright: '© 2026 Issyk-Kul Region',
     },
   },
@@ -776,6 +778,7 @@ export const dictionary = {
       description:
         'Жаңылыктар, департаменттер, туризм, өнүгүү долбоорлору жана тургундар менен коноктор үчүн санарип кызматтар.',
       privacy: 'Купуялуулук саясаты',
+      contactsDocxButton: 'Аппараттын байланыштары (DOCX)',
       copyright: '© 2026 Ысык-Көл облусу',
     },
   },
