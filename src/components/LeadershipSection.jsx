@@ -1,0 +1,118 @@
+import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
+import { Award, BookOpen, User } from 'lucide-react';
+import SectionShell from './SectionShell';
+
+const leaders = [
+  {
+    role: 'Полномочный представитель',
+    name: 'Абдиев Марат Кемелович',
+    since: 'С 2023 года',
+    bio: 'Имеет высшее юридическое образование. Более 20 лет государственного стажа. Ранее занимал должности в Администрации Президента и Правительстве Кыргызской Республики. Удостоен ряда государственных наград.',
+    tags: ['Государственное управление', 'Право', 'Региональное развитие'],
+    accent: 'from-blue-500 to-sky-500',
+    photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
+  },
+  {
+    role: 'Первый заместитель',
+    name: 'Токтосунов Бакыт Эркинович',
+    since: 'С 2024 года',
+    bio: 'Специалист в сфере экономики и государственного управления. Курирует вопросы инвестиций, экономического развития и реализации государственных программ в регионе.',
+    tags: ['Экономика', 'Инвестиции', 'Программы развития'],
+    accent: 'from-sky-500 to-cyan-500',
+    photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80',
+  },
+  {
+    role: 'Заместитель по социальным вопросам',
+    name: 'Джумабаева Айгуль Сапаровна',
+    since: 'С 2023 года',
+    bio: 'Опытный специалист в сферах здравоохранения, образования и социальной защиты. Координирует реализацию социальных программ и проектов для населения области.',
+    tags: ['Социальная политика', 'Здравоохранение', 'Образование'],
+    accent: 'from-indigo-500 to-blue-500',
+    photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80',
+  },
+];
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.12, delayChildren: 0.2 } },
+};
+const cardVariants = {
+  hidden: { y: 30, opacity: 0 },
+  visible: { y: 0, opacity: 1, transition: { type: 'spring', damping: 15, stiffness: 90 } },
+};
+
+export default function LeadershipSection() {
+  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+
+  return (
+    <SectionShell
+      id="leadership"
+      eyebrow="Руководство"
+      title="Полномочный представитель и заместители"
+      subtitle="Руководящий состав аппарата полномочного представителя Президента Кыргызской Республики в Иссык-Кульской области"
+    >
+      <motion.div
+        ref={ref}
+        variants={containerVariants}
+        initial="hidden"
+        animate={inView ? 'visible' : 'hidden'}
+        className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+      >
+        {leaders.map((leader) => (
+          <motion.div
+            key={leader.name}
+            variants={cardVariants}
+            className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_12px_28px_rgba(15,23,42,0.06)] transition-all duration-300 hover:shadow-[0_20px_40px_rgba(15,23,42,0.12)] hover:-translate-y-1"
+          >
+            {/* Фото */}
+            <div className="relative h-56 overflow-hidden">
+              <img
+                src={leader.photo}
+                alt={leader.name}
+                className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 via-slate-900/20 to-transparent" />
+              <span className={`absolute left-4 top-4 rounded-full bg-gradient-to-r ${leader.accent} px-3 py-1 text-xs font-semibold text-white shadow`}>
+                {leader.since}
+              </span>
+            </div>
+
+            {/* Контент */}
+            <div className="p-5">
+              <p className="mb-1 text-xs font-semibold uppercase tracking-[0.15em] text-blue-500">
+                {leader.role}
+              </p>
+              <h3 className="text-lg font-bold text-slate-900">{leader.name}</h3>
+              <p className="mt-3 text-sm leading-6 text-slate-600">{leader.bio}</p>
+
+              <div className="mt-4 flex flex-wrap gap-2">
+                {leader.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-0.5 text-xs text-slate-500"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Иконки действий */}
+            <div className="flex gap-2 border-t border-slate-100 px-5 py-4">
+              <button className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-medium text-slate-600 transition hover:bg-slate-100">
+                <User className="h-3.5 w-3.5" /> Профиль
+              </button>
+              <button className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-medium text-slate-600 transition hover:bg-slate-100">
+                <BookOpen className="h-3.5 w-3.5" /> Биография
+              </button>
+              <button className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-medium text-slate-600 transition hover:bg-slate-100">
+                <Award className="h-3.5 w-3.5" /> Награды
+              </button>
+            </div>
+          </motion.div>
+        ))}
+      </motion.div>
+    </SectionShell>
+  );
+}

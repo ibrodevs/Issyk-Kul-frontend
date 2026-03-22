@@ -7,6 +7,12 @@ import TourismSection from './components/TourismSection';
 import NewsSection from './components/NewsSection';
 import DepartmentsSection from './components/DepartmentsSection';
 import MediaSection from './components/MediaSection';
+import LeadershipSection from './components/LeadershipSection';
+import TerritorySection from './components/TerritorySection';
+import AppealsSection from './components/AppealsSection';
+import DocumentsSection from './components/DocumentsSection';
+import TendersSection from './components/TendersSection';
+import ProjectsSection from './components/ProjectsSection';
 import SiteFooter from './components/SiteFooter';
 import NewsDetailsPage from './components/NewsDetailsPage';
 import SightDetailsPage from './components/SightDetailsPage';
@@ -18,9 +24,15 @@ function HomePage({ t, lang }) {
       <HeroSection t={t} />
       <AboutMainPage t={t} />
       <TourismSection t={t} lang={lang} />
-      <NewsSection t={t} lang={lang} />
       <DepartmentsSection t={t} lang={lang} />
+      <LeadershipSection />
+      <TerritorySection />
+      <NewsSection t={t} lang={lang} />
       <MediaSection t={t} lang={lang} />
+      <AppealsSection />
+      <DocumentsSection />
+      <TendersSection />
+      <ProjectsSection />
     </main>
   );
 }
@@ -59,11 +71,16 @@ export default function App() {
   const sectionPath = (hash) => (isHome ? hash : `/${hash}`);
 
   const navItems = [
+    { href: sectionPath('#hero'), label: t.nav.home },
     { href: sectionPath('#about'), label: t.nav.about },
-    { href: sectionPath('#tourism'), label: t.nav.tourism },
-    { href: sectionPath('#news'), label: t.nav.news },
-    { href: sectionPath('#departments'), label: t.nav.departments },
-    { href: sectionPath('#media'), label: t.nav.media },
+    { href: sectionPath('#departments'), label: t.nav.apparatus },
+    { href: sectionPath('#leadership'), label: t.nav.leadership },
+    { href: sectionPath('#territory'), label: t.nav.territory },
+    { href: sectionPath('#news'), label: t.nav.press },
+    { href: sectionPath('#appeals'), label: t.nav.appeals },
+    { href: sectionPath('#documents'), label: t.nav.documents },
+    { href: sectionPath('#tenders'), label: t.nav.tenders },
+    { href: sectionPath('#projects'), label: t.nav.projects },
     { href: sectionPath('#contacts'), label: t.nav.contacts },
   ];
 

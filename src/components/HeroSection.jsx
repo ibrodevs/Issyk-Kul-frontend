@@ -57,7 +57,7 @@ export default function HeroSection({ t, onVideoLoad }) {
   }, []);
 
   return (
-    <section className="relative h-screen w-full overflow-hidden -mt-[calc(var(--nav-height,80px)+1px)]">
+    <section id="hero" className="relative h-screen w-full overflow-hidden -mt-[calc(var(--nav-height,80px)+1px)]">
       {/* Видео фон */}
       <div className="absolute inset-0">
         <img

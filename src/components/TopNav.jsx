@@ -141,7 +141,7 @@ export default function TopNav({ navItems, lang, setLang, t }) {
             </div>
           </motion.div>
 
-          {/* Десктопное меню с улучшенными анимациями */}
+          {/* Десктопное меню */}
           <nav className="hidden items-center gap-1 lg:flex">
             {navItems.map((item, index) => (
               <motion.a
@@ -160,8 +160,7 @@ export default function TopNav({ navItems, lang, setLang, t }) {
                 }`}>
                   {item.label}
                 </span>
-                
-                {/* Индикатор активной секции */}
+
                 {activeSection === getSectionIdFromHref(item.href) && (
                   <motion.div
                     layoutId="activeSection"
@@ -171,8 +170,7 @@ export default function TopNav({ navItems, lang, setLang, t }) {
                     transition={{ duration: 0.3 }}
                   />
                 )}
-                
-                {/* Эффект при наведении */}
+
                 {hoveredItem === index && activeSection !== getSectionIdFromHref(item.href) && (
                   <motion.div
                     className="absolute inset-0 rounded-xl bg-slate-100"
@@ -311,19 +309,12 @@ export default function TopNav({ navItems, lang, setLang, t }) {
                   }`}>
                     {item.label}
                   </div>
-                  
-                  {/* Эффект пульсации для активного пункта */}
+
                   {activeSection === getSectionIdFromHref(item.href) && (
                     <motion.div
                       className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-blue-500/20 to-transparent"
-                      animate={{
-                        x: ['-100%', '200%'],
-                      }}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        ease: 'linear',
-                      }}
+                      animate={{ x: ['-100%', '200%'] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
                     />
                   )}
                 </motion.a>
