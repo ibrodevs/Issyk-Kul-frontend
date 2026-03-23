@@ -142,7 +142,6 @@ export default function DocumentsSection() {
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-medium text-slate-800">{doc.title}</p>
-                  <p className="mt-0.5 text-xs text-slate-400">{doc.date} · {doc.size} · {doc.format}</p>
                 </div>
                 <a
                   href="#"

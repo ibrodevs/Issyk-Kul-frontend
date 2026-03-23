@@ -123,15 +123,6 @@ export default function TerritorySection() {
                 <div className="p-4">
                   <h4 className="font-bold text-slate-900">{d.name}</h4>
                   <p className="mt-0.5 text-xs text-slate-500">Центр: {d.center}</p>
-                  <div className="mt-3 flex justify-between text-xs text-slate-500">
-                    <span><Users className="mr-0.5 inline h-3 w-3" />{d.population}</span>
-                    <span><MapPin className="mr-0.5 inline h-3 w-3" />{d.area}</span>
-                  </div>
-                  <div className="mt-3 flex flex-wrap gap-1.5">
-                    {d.highlights.map((h) => (
-                      <span key={h} className="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-[11px] text-slate-500">{h}</span>
-                    ))}
-                  </div>
                 </div>
               </motion.div>
             ))}

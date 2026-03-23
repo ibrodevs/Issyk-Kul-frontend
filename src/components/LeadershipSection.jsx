@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Award, BookOpen, User } from 'lucide-react';
+
 import SectionShell from './SectionShell';
 
 const leaders = [
@@ -79,36 +79,11 @@ export default function LeadershipSection() {
             </div>
 
             {/* Контент */}
-            <div className="p-5">
+            <div className="px-5 py-4">
               <p className="mb-1 text-xs font-semibold uppercase tracking-[0.15em] text-blue-500">
                 {leader.role}
               </p>
               <h3 className="text-lg font-bold text-slate-900">{leader.name}</h3>
-              <p className="mt-3 text-sm leading-6 text-slate-600">{leader.bio}</p>
-
-              <div className="mt-4 flex flex-wrap gap-2">
-                {leader.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-0.5 text-xs text-slate-500"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Иконки действий */}
-            <div className="flex gap-2 border-t border-slate-100 px-5 py-4">
-              <button className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-medium text-slate-600 transition hover:bg-slate-100">
-                <User className="h-3.5 w-3.5" /> Профиль
-              </button>
-              <button className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-medium text-slate-600 transition hover:bg-slate-100">
-                <BookOpen className="h-3.5 w-3.5" /> Биография
-              </button>
-              <button className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-medium text-slate-600 transition hover:bg-slate-100">
-                <Award className="h-3.5 w-3.5" /> Награды
-              </button>
             </div>
           </motion.div>
         ))}

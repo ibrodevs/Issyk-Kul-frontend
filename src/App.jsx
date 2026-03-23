@@ -16,6 +16,7 @@ import ProjectsSection from './components/ProjectsSection';
 import SiteFooter from './components/SiteFooter';
 import NewsDetailsPage from './components/NewsDetailsPage';
 import SightDetailsPage from './components/SightDetailsPage';
+import ProjectDetailsPage from './components/ProjectDetailsPage';
 import { getDictionary } from './i18n';
 
 function HomePage({ t, lang }) {
@@ -112,6 +113,7 @@ export default function App() {
         <Route path="/" element={<HomePage t={t} lang={lang} />} />
         <Route path="/news/:id" element={<NewsDetailsPage t={t} lang={lang} />} />
         <Route path="/sights/:id" element={<SightDetailsPage lang={lang} />} />
+        <Route path="/projects/:id" element={<ProjectDetailsPage />} />
       </Routes>
 
       <SiteFooter t={t} linkPrefix={isHome ? '' : '/'} />

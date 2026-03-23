@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { ArrowRight, BarChart2, Calendar, DollarSign, Layers, Target } from 'lucide-react';
@@ -9,7 +10,7 @@ const tabs = [
   { id: 'state', label: 'Государственные программы' },
 ];
 
-const investmentProjects = [
+export const investmentProjects = [
   {
     title: 'Развитие туристической инфраструктуры северного берега',
     description: 'Строительство многофункционального туристического комплекса с гостиницами, аквапарком и конгресс-залом на территории Чолпон-Ата.',
@@ -163,9 +164,9 @@ export default function ProjectsSection() {
                       <span key={t} className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-0.5 text-[11px] text-slate-500">{t}</span>
                     ))}
                   </div>
-                  <button className="mt-4 flex items-center gap-1.5 text-xs font-medium text-blue-500 hover:text-blue-700 transition-colors">
+                  <Link to={`/projects/${investmentProjects.indexOf(p)}`} className="mt-4 flex items-center gap-1.5 text-xs font-medium text-blue-500 hover:text-blue-700 transition-colors">
                     Подробнее <ArrowRight className="h-3.5 w-3.5" />
-                  </button>
+                  </Link>
                 </div>
               </motion.article>
             ))}
