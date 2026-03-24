@@ -31,9 +31,9 @@ function HomePage({ t, lang }) {
       <NewsSection t={t} lang={lang} />
       <MediaSection t={t} lang={lang} />
       <AppealsSection t={t} />
-      <DocumentsSection t={t} />
-      <TendersSection t={t} />
-      <ProjectsSection t={t} />
+      <DocumentsSection t={t} lang={lang} />
+      <TendersSection t={t} lang={lang} />
+      <ProjectsSection t={t} lang={lang} />
     </main>
   );
 }
@@ -113,7 +113,7 @@ export default function App() {
         <Route path="/" element={<HomePage t={t} lang={lang} />} />
         <Route path="/news/:id" element={<NewsDetailsPage t={t} lang={lang} />} />
         <Route path="/sights/:id" element={<SightDetailsPage lang={lang} />} />
-        <Route path="/projects/:id" element={<ProjectDetailsPage />} />
+        <Route path="/projects/:id" element={<ProjectDetailsPage t={t} lang={lang} />} />
       </Routes>
 
       <SiteFooter t={t} linkPrefix={isHome ? '' : '/'} />

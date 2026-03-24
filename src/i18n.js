@@ -526,6 +526,16 @@ export const dictionary = {
         { id: 'tenders', label: 'Тендеры' },
       ],
       detailsButton: 'Детали',
+      modal: {
+        close: 'Закрыть',
+        number: 'Номер процедуры',
+        budget: 'Бюджет',
+        deadline: 'Срок подачи',
+        status: 'Статус',
+        category: 'Категория',
+        descriptionTitle: 'Описание',
+        descriptionFallback: 'Подробная информация по закупке доступна в полном пакете тендерной документации и сопровождающих материалах.',
+      },
       procurements: [
         {
           id: 'ZK-2026-001',
@@ -609,6 +619,10 @@ export const dictionary = {
         { id: 'state', label: 'Государственные программы' },
       ],
       detailsButton: 'Подробнее',
+      backButton: 'К проектам',
+      notFound: 'Проект не найден',
+      yearsLabel: 'Годы реализации',
+      descriptionTitle: 'Описание проекта',
       reportButton: 'Отчёт о ходе реализации',
       tasksLabel: 'задач',
       investmentProjects: [

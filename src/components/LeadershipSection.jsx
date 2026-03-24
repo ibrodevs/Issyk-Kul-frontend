@@ -1,37 +1,9 @@
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
+import { fetchLeadershipMembers } from '../api/newsApi';
 import SectionShell from './SectionShell';
-
-const leaders = [
-  {
-    role: 'Полномочный представитель',
-    name: 'Абдиев Марат Кемелович',
-    since: 'С 2023 года',
-    bio: 'Имеет высшее юридическое образование. Более 20 лет государственного стажа. Ранее занимал должности в Администрации Президента и Правительстве Кыргызской Республики. Удостоен ряда государственных наград.',
-    tags: ['Государственное управление', 'Право', 'Региональное развитие'],
-    accent: 'from-blue-500 to-sky-500',
-    photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
-  },
-  {
-    role: 'Первый заместитель',
-    name: 'Токтосунов Бакыт Эркинович',
-    since: 'С 2024 года',
-    bio: 'Специалист в сфере экономики и государственного управления. Курирует вопросы инвестиций, экономического развития и реализации государственных программ в регионе.',
-    tags: ['Экономика', 'Инвестиции', 'Программы развития'],
-    accent: 'from-sky-500 to-cyan-500',
-    photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80',
-  },
-  {
-    role: 'Заместитель по социальным вопросам',
-    name: 'Джумабаева Айгуль Сапаровна',
-    since: 'С 2023 года',
-    bio: 'Опытный специалист в сферах здравоохранения, образования и социальной защиты. Координирует реализацию социальных программ и проектов для населения области.',
-    tags: ['Социальная политика', 'Здравоохранение', 'Образование'],
-    accent: 'from-indigo-500 to-blue-500',
-    photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80',
-  },
-];
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -42,8 +14,31 @@ const cardVariants = {
   visible: { y: 0, opacity: 1, transition: { type: 'spring', damping: 15, stiffness: 90 } },
 };
 
-export default function LeadershipSection({ t }) {
+const uiByLang = {
+  ru: {
+    loading: 'Загрузка руководства...',
+    error: 'Не удалось загрузить руководство',
+    empty: 'Данные о руководстве пока не добавлены',
+  },
+  en: {
+    loading: 'Loading leadership...',
+    error: 'Failed to load leadership',
+    empty: 'Leadership data has not been added yet',
+  },
+  kg: {
+    loading: 'Жетекчилик жүктөлүүдө...',
+    error: 'Жетекчиликти жүктөө мүмкүн болгон жок',
+    empty: 'Жетекчилик боюнча маалымат азырынча кошула элек',
+  },
+};
+
+export default function LeadershipSection({ t, lang }) {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [leaders, setLeaders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  const ui = uiByLang[lang] ?? uiByLang.ru;
 
   const section = t?.leadership?.section ?? {
     eyebrow: 'Руководство',
@@ -52,10 +47,44 @@ export default function LeadershipSection({ t }) {
       'Руководящий состав аппарата полномочного представителя Президента Кыргызской Республики в Иссык-Кульской области',
   };
 
-  const leaders = t?.leadership?.leaders ?? [];
+  useEffect(() => {
+    let cancelled = false;
+
+    const load = async () => {
+      setLoading(true);
+      setError('');
+
+      try {
+        const items = await fetchLeadershipMembers({ lang });
+
+        if (!cancelled) {
+          setLeaders([...items].sort((a, b) => a.order - b.order));
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setLeaders([]);
+          setError(err instanceof Error ? err.message : 'Unknown error');
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    };
+
+    load();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [lang]);
 
   return (
     <SectionShell id="leadership" eyebrow={section.eyebrow} title={section.title} subtitle={section.subtitle}>
+      {loading && <p className="mb-6 text-sm text-slate-600">{ui.loading}</p>}
+      {!loading && error && <p className="mb-6 text-sm text-red-600">{ui.error}</p>}
+      {!loading && !error && leaders.length === 0 && <p className="mb-6 text-sm text-slate-600">{ui.empty}</p>}
+
       <motion.div
         ref={ref}
         variants={containerVariants}
@@ -65,22 +94,22 @@ export default function LeadershipSection({ t }) {
       >
         {leaders.map((leader) => (
           <motion.div
-            key={leader.name}
+            key={leader.id}
             variants={cardVariants}
             className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_12px_28px_rgba(15,23,42,0.06)] transition-all duration-300 hover:shadow-[0_20px_40px_rgba(15,23,42,0.12)] hover:-translate-y-1"
           >
             <div className="relative h-56 overflow-hidden">
               <img
                 src={leader.photo}
-                alt={leader.name}
+                alt={leader.full_name}
                 className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 via-slate-900/20 to-transparent" />
             </div>
 
             <div className="px-5 py-4">
-              <p className="mb-1 text-xs font-semibold uppercase tracking-[0.15em] text-blue-500">{leader.role}</p>
-              <h3 className="text-lg font-bold text-slate-900">{leader.name}</h3>
+              <p className="mb-1 text-xs font-semibold uppercase tracking-[0.15em] text-blue-500">{leader.position}</p>
+              <h3 className="text-lg font-bold text-slate-900">{leader.full_name}</h3>
             </div>
           </motion.div>
         ))}

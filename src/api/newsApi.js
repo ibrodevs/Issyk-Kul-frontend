@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://ik-backend-780b39b1dc1f.herokuapp.com';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://ik-backend-780b39b1dc1f.herokuapp.com';
 
 function buildUrl(path, query = {}) {
   const url = new URL(path, API_BASE_URL);
@@ -25,6 +25,14 @@ function unpackList(payload) {
   if (Array.isArray(payload)) return payload;
   if (Array.isArray(payload?.results)) return payload.results;
   return [];
+}
+
+function parseDateValue(value) {
+  if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return new Date(`${value}T00:00:00`);
+  }
+
+  return new Date(value);
 }
 
 export async function fetchNewsList({ lang = 'ru', categoryId, isHot, isMain } = {}) {
@@ -104,24 +112,87 @@ export async function fetchMediaCategories({ lang = 'ru' } = {}) {
   return unpackList(payload);
 }
 
-export function formatNewsDate(dateIso, lang = 'ru') {
-  if (!dateIso) return '';
+export async function fetchLeadershipMembers({ lang = 'ru' } = {}) {
+  const url = buildUrl('/api/leadership-members/', { lang });
+  const payload = await fetchJson(url);
+  return unpackList(payload);
+}
 
+export async function fetchDocuments({ lang = 'ru', category } = {}) {
+  const url = buildUrl('/api/documents/', { lang, category });
+  const payload = await fetchJson(url);
+  return unpackList(payload);
+}
+
+export async function fetchProcurementsList({ lang = 'ru', type } = {}) {
+  const url = buildUrl('/api/procurements/', { lang, type });
+  const payload = await fetchJson(url);
+  return unpackList(payload);
+}
+
+export async function fetchProjectsList({ lang = 'ru', type } = {}) {
+  const url = buildUrl('/api/projects/', { lang, type });
+  const payload = await fetchJson(url);
+  return unpackList(payload);
+}
+
+export async function fetchProjectById(id, { lang = 'ru' } = {}) {
+  const url = buildUrl(`/api/projects/${id}/`, { lang });
+  return fetchJson(url);
+}
+
+function getLocale(lang = 'ru') {
   const localeMap = {
     ru: 'ru-RU',
     en: 'en-US',
     kg: 'ky-KG',
   };
 
-  const date = new Date(dateIso);
+  return localeMap[lang] ?? 'ru-RU';
+}
+
+export function formatNewsDate(dateIso, lang = 'ru') {
+  if (!dateIso) return '';
+
+  const date = parseDateValue(dateIso);
 
   if (Number.isNaN(date.getTime())) {
     return '';
   }
 
-  return new Intl.DateTimeFormat(localeMap[lang] ?? 'ru-RU', {
+  return new Intl.DateTimeFormat(getLocale(lang), {
     day: '2-digit',
     month: 'long',
     year: 'numeric',
   }).format(date);
+}
+
+export function formatShortDate(dateIso, lang = 'ru') {
+  if (!dateIso) return '';
+
+  const date = parseDateValue(dateIso);
+
+  if (Number.isNaN(date.getTime())) {
+    return '';
+  }
+
+  return new Intl.DateTimeFormat(getLocale(lang), {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  }).format(date);
+}
+
+export function formatSomAmount(amount, lang = 'ru') {
+  if (amount === undefined || amount === null || amount === '') {
+    return '';
+  }
+
+  const number = Number(amount);
+
+  if (Number.isNaN(number)) {
+    return String(amount);
+  }
+
+  return `${new Intl.NumberFormat(getLocale(lang)).format(number)} сом`;
 }
