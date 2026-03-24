@@ -3,60 +3,6 @@ import { useInView } from 'react-intersection-observer';
 import { Building2, MapPin, Trees, Users } from 'lucide-react';
 import SectionShell from './SectionShell';
 
-const districts = [
-  {
-    name: 'Иссык-Кульский район',
-    center: 'с. Cholpon-Ata',
-    population: '≈ 90 000',
-    area: '8 236 км²',
-    highlights: ['Курортные зоны', 'Пляжи', 'Санатории'],
-    color: 'bg-blue-500',
-    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=70',
-  },
-  {
-    name: 'Джеты-Огузский район',
-    center: 'с. Покровка',
-    population: '≈ 70 000',
-    area: '9 185 км²',
-    highlights: ['Джеты-Огуз', 'Санаторий "Джеты-Огуз"', 'Горные маршруты'],
-    color: 'bg-sky-500',
-    image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=600&q=70',
-  },
-  {
-    name: 'Тюпский район',
-    center: 'г. Тюп',
-    population: '≈ 65 000',
-    area: '4 532 км²',
-    highlights: ['Восточное побережье', 'Аграрный центр', 'Рыболовство'],
-    color: 'bg-indigo-500',
-    image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=70',
-  },
-  {
-    name: 'Тонский район',
-    center: 'с. Боконбаево',
-    population: '≈ 55 000',
-    area: '7 800 км²',
-    highlights: ['Орёл-охота', 'Южный берег', 'Этнотуризм'],
-    color: 'bg-cyan-500',
-    image: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=600&q=70',
-  },
-  {
-    name: 'Ак-Суйский район',
-    center: 'г. Каракол',
-    population: '≈ 120 000',
-    area: '11 640 км²',
-    highlights: ['Каракол', 'Горнолыжный курорт', 'Треккинг'],
-    color: 'bg-blue-600',
-    image: 'https://images.unsplash.com/photo-1515859005217-8a1f08870f59?auto=format&fit=crop&w=600&q=70',
-  },
-];
-
-const cities = [
-  { name: 'Каракол', pop: '≈ 75 000', role: 'Областной центр', icon: Building2 },
-  { name: 'Балыкчы', pop: '≈ 45 000', role: 'Промышленный центр', icon: Building2 },
-  { name: 'Чолпон-Ата', pop: '≈ 15 000', role: 'Курортный центр', icon: Building2 },
-];
-
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.2 } },
@@ -66,15 +12,73 @@ const itemVariants = {
   visible: { y: 0, opacity: 1, transition: { type: 'spring', damping: 16, stiffness: 90 } },
 };
 
-export default function TerritorySection() {
+export default function TerritorySection({ t }) {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.08 });
+
+  const section = t?.territory?.section ?? {
+    eyebrow: 'Территориальное деление',
+    title: 'Районы и города Иссык-Кульской области',
+    subtitle: 'Область включает 5 административных районов и 3 города областного значения с общей площадью 43 100 км²',
+  };
+
+  const stats = (t?.territory?.stats ?? [
+    { value: '5', label: 'Районов' },
+    { value: '3', label: 'Города' },
+    { value: '43 100 км²', label: 'Площадь' },
+    { value: '≈ 500 000', label: 'Население' },
+  ]).map((stat, idx) => ({
+    ...stat,
+    Icon: [MapPin, Building2, Trees, Users][idx] || MapPin,
+  }));
+
+  const districts = t?.territory?.districts ?? [
+    {
+      name: 'Иссык-Кульский район',
+      center: 'с. Cholpon-Ata',
+      color: 'bg-blue-500',
+      image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=70',
+    },
+    {
+      name: 'Джеты-Огузский район',
+      center: 'с. Покровка',
+      color: 'bg-sky-500',
+      image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=600&q=70',
+    },
+    {
+      name: 'Тюпский район',
+      center: 'г. Тюп',
+      color: 'bg-indigo-500',
+      image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=70',
+    },
+    {
+      name: 'Тонский район',
+      center: 'с. Боконбаево',
+      color: 'bg-cyan-500',
+      image: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=600&q=70',
+    },
+    {
+      name: 'Ак-Суйский район',
+      center: 'г. Каракол',
+      color: 'bg-blue-600',
+      image: 'https://images.unsplash.com/photo-1515859005217-8a1f08870f59?auto=format&fit=crop&w=600&q=70',
+    },
+  ];
+
+  const cities = (t?.territory?.cities ?? [
+    { name: 'Каракол', pop: '≈ 75 000', role: 'Областной центр' },
+    { name: 'Балыкчы', pop: '≈ 45 000', role: 'Промышленный центр' },
+    { name: 'Чолпон-Ата', pop: '≈ 15 000', role: 'Курортный центр' },
+  ]).map((city) => ({
+    ...city,
+    icon: Building2,
+  }));
 
   return (
     <SectionShell
       id="territory"
-      eyebrow="Территориальное деление"
-      title="Районы и города Иссык-Кульской области"
-      subtitle="Область включает 5 административных районов и 3 города областного значения с общей площадью 43 100 км²"
+      eyebrow={section.eyebrow}
+      title={section.title}
+      subtitle={section.subtitle}
     >
       <motion.div
         ref={ref}
@@ -85,12 +89,7 @@ export default function TerritorySection() {
       >
         {/* Stats */}
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-          {[
-            { value: '5', label: 'Районов', Icon: MapPin },
-            { value: '3', label: 'Города', Icon: Building2 },
-            { value: '43 100 км²', label: 'Площадь', Icon: Trees },
-            { value: '≈ 500 000', label: 'Население', Icon: Users },
-          ].map(({ value, label, Icon }) => (
+          {stats.map(({ value, label, Icon }) => (
             <motion.div
               key={label}
               variants={itemVariants}
@@ -107,7 +106,7 @@ export default function TerritorySection() {
 
         {/* Районы */}
         <div>
-          <h3 className="mb-5 text-lg font-bold text-slate-900">Районы</h3>
+          <h3 className="mb-5 text-lg font-bold text-slate-900">{t?.territory?.districtsHeading ?? 'Районы'}</h3>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {districts.map((d) => (
               <motion.div
@@ -122,7 +121,7 @@ export default function TerritorySection() {
                 </div>
                 <div className="p-4">
                   <h4 className="font-bold text-slate-900">{d.name}</h4>
-                  <p className="mt-0.5 text-xs text-slate-500">Центр: {d.center}</p>
+                  <p className="mt-0.5 text-xs text-slate-500">{t?.territory?.centerLabel ?? 'Центр:'} {d.center}</p>
                 </div>
               </motion.div>
             ))}
@@ -131,7 +130,7 @@ export default function TerritorySection() {
 
         {/* Города */}
         <div>
-          <h3 className="mb-5 text-lg font-bold text-slate-900">Города областного значения</h3>
+          <h3 className="mb-5 text-lg font-bold text-slate-900">{t?.territory?.citiesHeading ?? 'Города областного значения'}</h3>
           <div className="grid gap-4 sm:grid-cols-3">
             {cities.map((c) => (
               <motion.div

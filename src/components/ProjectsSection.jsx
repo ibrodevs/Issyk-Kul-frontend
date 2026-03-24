@@ -101,16 +101,24 @@ const itemVariants = {
   visible: { y: 0, opacity: 1, transition: { type: 'spring', damping: 16, stiffness: 90 } },
 };
 
-export default function ProjectsSection() {
+export default function ProjectsSection({ t }) {
   const [activeTab, setActiveTab] = useState('investment');
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.06 });
+
+  const section = t?.projects?.section ?? { eyebrow: 'Проекты и программы', title: 'Инвестиции и государственные программы', subtitle: '' };
+  const tabsList = t?.projects?.tabs ?? tabs;
+  const investProjects = t?.projects?.investmentProjects ?? investmentProjects;
+  const stateProgs = t?.projects?.statePrograms ?? statePrograms;
+  const detailsLabel = t?.projects?.detailsButton ?? 'Подробнее';
+  const reportLabel = t?.projects?.reportButton ?? 'Отчёт о ходе реализации';
+  const tasksLabel = t?.projects?.tasksLabel ?? 'задач';
 
   return (
     <SectionShell
       id="projects"
-      eyebrow="Проекты и программы"
-      title="Инвестиции и государственные программы"
-      subtitle="Стратегические проекты и государственные программы, реализуемые в Иссык-Кульской области для устойчивого развития региона"
+      eyebrow={section.eyebrow}
+      title={section.title}
+      subtitle={section.subtitle}
     >
       <motion.div
         ref={ref}
@@ -121,17 +129,17 @@ export default function ProjectsSection() {
       >
         {/* Табы */}
         <div className="flex flex-wrap gap-2">
-          {tabs.map((t) => (
+          {tabsList.map((tab) => (
             <button
-              key={t.id}
-              onClick={() => setActiveTab(t.id)}
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
               className={`rounded-full px-4 py-2 text-sm font-medium transition ${
-                activeTab === t.id
+                activeTab === tab.id
                   ? 'bg-gradient-to-r from-blue-500 to-sky-500 text-white shadow'
                   : 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
               }`}
             >
-              {t.label}
+              {tab.label}
             </button>
           ))}
         </div>
@@ -139,16 +147,16 @@ export default function ProjectsSection() {
         {/* Инвестиционные проекты */}
         {activeTab === 'investment' && (
           <div className="grid gap-6 sm:grid-cols-2">
-            {investmentProjects.map((p) => (
+            {investProjects.map((p, idx) => (
               <motion.article
                 key={p.title}
                 variants={itemVariants}
                 className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_12px_28px_rgba(15,23,42,0.06)] hover:shadow-[0_20px_40px_rgba(15,23,42,0.10)] hover:-translate-y-0.5 transition-all duration-300"
               >
                 <div className="relative h-44 overflow-hidden">
-                  <img src={p.image} alt={p.title} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                  <img src={investmentProjects[idx]?.image} alt={p.title} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900/65 to-transparent" />
-                  <span className={`absolute right-4 top-4 rounded-full px-3 py-1 text-xs font-semibold ${p.statusColor}`}>
+                  <span className={`absolute right-4 top-4 rounded-full px-3 py-1 text-xs font-semibold ${investmentProjects[idx]?.statusColor}`}>
                     {p.status}
                   </span>
                 </div>
@@ -160,13 +168,13 @@ export default function ProjectsSection() {
                     <span className="flex items-center gap-1"><Calendar className="h-3.5 w-3.5 text-blue-400" />{p.period}</span>
                   </div>
                   <div className="mt-3 flex flex-wrap gap-1.5">
-                    {p.tags.map((t) => (
-                      <span key={t} className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-0.5 text-[11px] text-slate-500">{t}</span>
+                    {p.tags.map((tag) => (
+                      <span key={tag} className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-0.5 text-[11px] text-slate-500">{tag}</span>
                     ))}
                   </div>
-                  <Link to={`/projects/${investmentProjects.indexOf(p)}`} className="mt-4 flex items-center gap-1.5 text-xs font-medium text-blue-500 hover:text-blue-700 transition-colors">
-                    Подробнее <ArrowRight className="h-3.5 w-3.5" />
-                  </Link>
+                  <button className="mt-4 flex items-center gap-1.5 text-xs font-medium text-blue-500 hover:text-blue-700 transition-colors">
+                    {detailsLabel} <ArrowRight className="h-3.5 w-3.5" />
+                  </button>
                 </div>
               </motion.article>
             ))}
@@ -176,7 +184,7 @@ export default function ProjectsSection() {
         {/* Государственные программы */}
         {activeTab === 'state' && (
           <div className="space-y-5">
-            {statePrograms.map((p) => (
+            {stateProgs.map((p) => (
               <motion.div
                 key={p.title}
                 variants={itemVariants}
@@ -199,7 +207,7 @@ export default function ProjectsSection() {
                     <p className="text-xs text-slate-500">{p.period}</p>
                     <div className="mt-1 flex items-center gap-1.5 justify-end text-xs text-slate-500">
                       <Target className="h-3.5 w-3.5 text-blue-400" />
-                      {p.completed}/{p.tasks} задач
+                      {p.completed}/{p.tasks} {tasksLabel}
                     </div>
                   </div>
                 </div>
@@ -221,7 +229,7 @@ export default function ProjectsSection() {
                 </div>
 
                 <button className="mt-3 flex items-center gap-1.5 text-xs font-medium text-blue-500 hover:text-blue-700 transition-colors">
-                  <BarChart2 className="h-3.5 w-3.5" /> Отчёт о ходе реализации
+                  <BarChart2 className="h-3.5 w-3.5" /> {reportLabel}
                 </button>
               </motion.div>
             ))}

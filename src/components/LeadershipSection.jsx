@@ -42,16 +42,20 @@ const cardVariants = {
   visible: { y: 0, opacity: 1, transition: { type: 'spring', damping: 15, stiffness: 90 } },
 };
 
-export default function LeadershipSection() {
+export default function LeadershipSection({ t }) {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
+  const section = t?.leadership?.section ?? {
+    eyebrow: 'Руководство',
+    title: 'Полномочный представитель и заместители',
+    subtitle:
+      'Руководящий состав аппарата полномочного представителя Президента Кыргызской Республики в Иссык-Кульской области',
+  };
+
+  const leaders = t?.leadership?.leaders ?? [];
+
   return (
-    <SectionShell
-      id="leadership"
-      eyebrow="Руководство"
-      title="Полномочный представитель и заместители"
-      subtitle="Руководящий состав аппарата полномочного представителя Президента Кыргызской Республики в Иссык-Кульской области"
-    >
+    <SectionShell id="leadership" eyebrow={section.eyebrow} title={section.title} subtitle={section.subtitle}>
       <motion.div
         ref={ref}
         variants={containerVariants}
@@ -65,7 +69,6 @@ export default function LeadershipSection() {
             variants={cardVariants}
             className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_12px_28px_rgba(15,23,42,0.06)] transition-all duration-300 hover:shadow-[0_20px_40px_rgba(15,23,42,0.12)] hover:-translate-y-1"
           >
-            {/* Фото */}
             <div className="relative h-56 overflow-hidden">
               <img
                 src={leader.photo}
@@ -73,16 +76,10 @@ export default function LeadershipSection() {
                 className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 via-slate-900/20 to-transparent" />
-              <span className={`absolute left-4 top-4 rounded-full bg-gradient-to-r ${leader.accent} px-3 py-1 text-xs font-semibold text-white shadow`}>
-                {leader.since}
-              </span>
             </div>
 
-            {/* Контент */}
             <div className="px-5 py-4">
-              <p className="mb-1 text-xs font-semibold uppercase tracking-[0.15em] text-blue-500">
-                {leader.role}
-              </p>
+              <p className="mb-1 text-xs font-semibold uppercase tracking-[0.15em] text-blue-500">{leader.role}</p>
               <h3 className="text-lg font-bold text-slate-900">{leader.name}</h3>
             </div>
           </motion.div>

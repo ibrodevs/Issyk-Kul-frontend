@@ -100,18 +100,29 @@ const rowVariants = {
   visible: { y: 0, opacity: 1, transition: { type: 'spring', damping: 16, stiffness: 100 } },
 };
 
-export default function TendersSection() {
+export default function TendersSection({ t }) {
   const [activeTab, setActiveTab] = useState('procurement');
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.08 });
 
-  const items = activeTab === 'procurement' ? procurements : tenders;
+  const section = t?.tenders?.section ?? { eyebrow: 'Тендеры и закупки', title: 'Государственные закупки и тендеры', subtitle: '' };
+  const stats = t?.tenders?.stats ?? [
+    { value: '8', label: 'Активных процедур' },
+    { value: '3', label: 'Тендеров открыто' },
+    { value: '156 млн сом', label: 'Общий бюджет 2026' },
+  ];
+  const tabsList = t?.tenders?.tabs ?? tabs;
+  const procsList = t?.tenders?.procurements ?? procurements;
+  const tendersList = t?.tenders?.tendersList ?? tenders;
+  const detailsLabel = t?.tenders?.detailsButton ?? 'Детали';
+
+  const items = activeTab === 'procurement' ? procsList : tendersList;
 
   return (
     <SectionShell
       id="tenders"
-      eyebrow="Тендеры и закупки"
-      title="Государственные закупки и тендеры"
-      subtitle="Открытые конкурсные процедуры для поставщиков товаров, работ и услуг в Иссык-Кульской области"
+      eyebrow={section.eyebrow}
+      title={section.title}
+      subtitle={section.subtitle}
     >
       <motion.div
         ref={ref}
@@ -122,18 +133,14 @@ export default function TendersSection() {
       >
         {/* Статистика */}
         <div className="grid grid-cols-3 gap-4">
-          {[
-            { value: '8', label: 'Активных процедур', Icon: ShoppingCart },
-            { value: '3', label: 'Тендеров открыто', Icon: BadgeCheck },
-            { value: '156 млн сом', label: 'Общий бюджет 2026', Icon: DollarSign },
-          ].map(({ value, label, Icon }) => (
+          {stats.map(({ value, label }) => (
             <motion.div
               key={label}
               variants={rowVariants}
               className="flex flex-col items-center gap-2 rounded-2xl border border-slate-200 bg-white p-4 text-center shadow-sm"
             >
               <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-blue-50 to-sky-50">
-                <Icon className="h-4.5 w-4.5 text-blue-500" />
+                {label.includes('Активн') ? <ShoppingCart className="h-4.5 w-4.5 text-blue-500" /> : label.includes('Тендер') ? <BadgeCheck className="h-4.5 w-4.5 text-blue-500" /> : <DollarSign className="h-4.5 w-4.5 text-blue-500" />}
               </div>
               <p className="text-lg font-bold text-slate-900">{value}</p>
               <p className="text-xs text-slate-500 leading-4">{label}</p>
@@ -143,17 +150,17 @@ export default function TendersSection() {
 
         {/* Табы */}
         <div className="flex gap-2">
-          {tabs.map((t) => (
+          {tabsList.map((tab) => (
             <button
-              key={t.id}
-              onClick={() => setActiveTab(t.id)}
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
               className={`rounded-full px-4 py-2 text-sm font-medium transition ${
-                activeTab === t.id
+                activeTab === tab.id
                   ? 'bg-gradient-to-r from-blue-500 to-sky-500 text-white shadow'
                   : 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
               }`}
             >
-              {t.label}
+              {tab.label}
             </button>
           ))}
         </div>
@@ -186,7 +193,7 @@ export default function TendersSection() {
                   {item.status}
                 </span>
                 <a href="#" className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-medium text-slate-600 transition hover:bg-slate-100">
-                  <ExternalLink className="h-3.5 w-3.5" /> Детали
+                  <ExternalLink className="h-3.5 w-3.5" /> {detailsLabel}
                 </a>
               </div>
             </motion.div>

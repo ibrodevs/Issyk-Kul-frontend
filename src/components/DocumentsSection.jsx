@@ -88,18 +88,28 @@ const rowVariants = {
   visible: { y: 0, opacity: 1, transition: { type: 'spring', damping: 16, stiffness: 100 } },
 };
 
-export default function DocumentsSection() {
+export default function DocumentsSection({ t }) {
   const [activeCat, setActiveCat] = useState('all');
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.08 });
 
-  const filtered = activeCat === 'all' ? documents : documents.filter((d) => d.cat === activeCat);
+  const section = t?.documents?.section ?? { eyebrow: 'Документы', title: 'Нормативные акты, распоряжения и отчёты', subtitle: '' };
+  const categories = t?.documents?.categories ?? [
+    { id: 'all', label: 'Все документы' },
+    { id: 'regulations', label: 'Нормативные акты' },
+    { id: 'orders', label: 'Распоряжения' },
+    { id: 'reports', label: 'Отчёты' },
+  ];
+  const docs = t?.documents?.documents ?? documents;
+  const downloadLabel = t?.documents?.downloadButton ?? 'Скачать';
+
+  const filtered = activeCat === 'all' ? docs : docs.filter((d) => d.cat === activeCat);
 
   return (
     <SectionShell
       id="documents"
-      eyebrow="Документы"
-      title="Нормативные акты, распоряжения и отчёты"
-      subtitle="Официальные документы аппарата полномочного представителя Президента Кыргызской Республики в Иссык-Кульской области"
+      eyebrow={section.eyebrow}
+      title={section.title}
+      subtitle={section.subtitle}
     >
       <motion.div
         ref={ref}
@@ -147,7 +157,7 @@ export default function DocumentsSection() {
                   href="#"
                   className="flex shrink-0 items-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-medium text-slate-600 transition hover:bg-slate-100"
                 >
-                  <Download className="h-3.5 w-3.5" /> Скачать
+                  <Download className="h-3.5 w-3.5" /> {downloadLabel}
                 </a>
               </motion.div>
             );

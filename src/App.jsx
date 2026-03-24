@@ -26,14 +26,14 @@ function HomePage({ t, lang }) {
       <AboutMainPage t={t} />
       <TourismSection t={t} lang={lang} />
       <DepartmentsSection t={t} lang={lang} />
-      <LeadershipSection />
-      <TerritorySection />
+      <LeadershipSection t={t} lang={lang} />
+      <TerritorySection t={t} />
       <NewsSection t={t} lang={lang} />
       <MediaSection t={t} lang={lang} />
-      <AppealsSection />
-      <DocumentsSection />
-      <TendersSection />
-      <ProjectsSection />
+      <AppealsSection t={t} />
+      <DocumentsSection t={t} />
+      <TendersSection t={t} />
+      <ProjectsSection t={t} />
     </main>
   );
 }
