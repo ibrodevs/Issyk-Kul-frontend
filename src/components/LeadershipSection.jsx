@@ -98,7 +98,7 @@ export default function LeadershipSection({ t, lang }) {
             variants={cardVariants}
             className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_12px_28px_rgba(15,23,42,0.06)] transition-all duration-300 hover:shadow-[0_20px_40px_rgba(15,23,42,0.12)] hover:-translate-y-1"
           >
-            <div className="relative h-56 overflow-hidden">
+            <div className="relative aspect-[3/4] w-full bg-slate-100 overflow-hidden">
               <img
                 src={leader.photo}
                 alt={leader.full_name}
