@@ -8,6 +8,7 @@ import NewsSection from './components/NewsSection';
 import DepartmentsSection from './components/DepartmentsSection';
 import MediaSection from './components/MediaSection';
 import LeadershipSection from './components/LeadershipSection';
+import EmployeesSection from './components/EmployeesSection';
 import TerritorySection from './components/TerritorySection';
 import AppealsSection from './components/AppealsSection';
 import DocumentsSection from './components/DocumentsSection';
@@ -27,6 +28,7 @@ function HomePage({ t, lang }) {
       <TourismSection t={t} lang={lang} />
       <DepartmentsSection t={t} lang={lang} />
       <LeadershipSection t={t} lang={lang} />
+      <EmployeesSection t={t} lang={lang} />
       <TerritorySection t={t} />
       <NewsSection t={t} lang={lang} />
       <MediaSection t={t} lang={lang} />
@@ -76,6 +78,7 @@ export default function App() {
     { href: sectionPath('#about'), label: t.nav.about },
     { href: sectionPath('#departments'), label: t.nav.apparatus },
     { href: sectionPath('#leadership'), label: t.nav.leadership },
+    { href: sectionPath('#employees'), label: t.nav.employees },
     { href: sectionPath('#territory'), label: t.nav.territory },
     { href: sectionPath('#news'), label: t.nav.press },
     { href: sectionPath('#appeals'), label: t.nav.appeals },

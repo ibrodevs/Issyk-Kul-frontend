@@ -5,6 +5,7 @@ export const dictionary = {
       about: 'О регионе',
       apparatus: 'Аппарат',
       leadership: 'Руководство',
+      employees: 'Сотрудники',
       territory: 'Тер. деление',
       press: 'Пресс-центр',
       appeals: 'Обращения',
@@ -322,6 +323,47 @@ export const dictionary = {
           accent: 'from-indigo-500 to-blue-500',
           photo:
             'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80',
+        },
+      ],
+    },
+    employees: {
+      section: {
+        eyebrow: 'Сотрудники',
+        title: 'Сотрудники аппарата',
+        subtitle: 'Контактная информация сотрудников аппарата для быстрой связи и обращений.',
+      },
+      phoneLabel: 'Телефон',
+      emailLabel: 'Почта',
+      loading: 'Загрузка сотрудников...',
+      error: 'Не удалось загрузить сотрудников',
+      empty: 'Сотрудники пока не добавлены',
+      items: [
+        {
+          name: 'Иванов Сергей Петрович',
+          position: 'Главный специалист',
+          phone: '+996 (555) 12-34-56',
+          phoneRaw: '+996555123456',
+          email: 'ivanov@issyk-kul.gov.kg',
+          photo:
+            'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=900&q=80',
+        },
+        {
+          name: 'Касымова Алина Руслановна',
+          position: 'Ведущий консультант',
+          phone: '+996 (700) 98-76-54',
+          phoneRaw: '+996700987654',
+          email: 'kasymova@issyk-kul.gov.kg',
+          photo:
+            'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=900&q=80',
+        },
+        {
+          name: 'Бектуров Нурлан Азаматович',
+          position: 'Начальник отдела',
+          phone: '+996 (777) 45-67-89',
+          phoneRaw: '+996777456789',
+          email: 'bekturov@issyk-kul.gov.kg',
+          photo:
+            'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=80',
         },
       ],
     },
@@ -714,6 +756,7 @@ export const dictionary = {
       about: 'About',
       apparatus: 'Apparatus',
       leadership: 'Leadership',
+      employees: 'Employees',
       territory: 'Territories',
       press: 'Press Center',
       appeals: 'Appeals',
@@ -1030,6 +1073,47 @@ export const dictionary = {
           accent: 'from-indigo-500 to-blue-500',
           photo:
             'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80',
+        },
+      ],
+    },
+    employees: {
+      section: {
+        eyebrow: 'Employees',
+        title: 'Office staff',
+        subtitle: 'Sample staff cards with direct contact details for quick communication.',
+      },
+      phoneLabel: 'Phone',
+      emailLabel: 'Email',
+      loading: 'Loading employees...',
+      error: 'Failed to load employees',
+      empty: 'Employee data has not been added yet',
+      items: [
+        {
+          name: 'Sergey Ivanov',
+          position: 'Chief Specialist',
+          phone: '+996 (555) 12-34-56',
+          phoneRaw: '+996555123456',
+          email: 'ivanov@issyk-kul.gov.kg',
+          photo:
+            'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=900&q=80',
+        },
+        {
+          name: 'Alina Kasymova',
+          position: 'Senior Consultant',
+          phone: '+996 (700) 98-76-54',
+          phoneRaw: '+996700987654',
+          email: 'kasymova@issyk-kul.gov.kg',
+          photo:
+            'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=900&q=80',
+        },
+        {
+          name: 'Nurlan Bekturov',
+          position: 'Department Head',
+          phone: '+996 (777) 45-67-89',
+          phoneRaw: '+996777456789',
+          email: 'bekturov@issyk-kul.gov.kg',
+          photo:
+            'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=80',
         },
       ],
     },
@@ -1408,6 +1492,7 @@ export const dictionary = {
       about: 'Облус жөнүндө',
       apparatus: 'Аппарат',
       leadership: 'Жетекчилик',
+      employees: 'Кызматкерлер',
       territory: 'Аймак бөлүнүшү',
       press: 'Пресс-борбор',
       appeals: 'Арыздар',
@@ -1724,6 +1809,47 @@ export const dictionary = {
           accent: 'from-indigo-500 to-blue-500',
           photo:
             'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80',
+        },
+      ],
+    },
+    employees: {
+      section: {
+        eyebrow: 'Кызматкерлер',
+        title: 'Аппараттын кызматкерлери',
+        subtitle: 'Тез байланыш жана кайрылуулар үчүн аппарат кызматкерлеринин байланыш маалыматы.',
+      },
+      phoneLabel: 'Телефон',
+      emailLabel: 'Электрондук почта',
+      loading: 'Кызматкерлер жүктөлүүдө...',
+      error: 'Кызматкерлерди жүктөө мүмкүн болгон жок',
+      empty: 'Кызматкерлер боюнча маалымат азырынча кошула элек',
+      items: [
+        {
+          name: 'Иванов Сергей Петрович',
+          position: 'Башкы адис',
+          phone: '+996 (555) 12-34-56',
+          phoneRaw: '+996555123456',
+          email: 'ivanov@issyk-kul.gov.kg',
+          photo:
+            'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=900&q=80',
+        },
+        {
+          name: 'Касымова Алина Руслановна',
+          position: 'Жетектөөчү консультант',
+          phone: '+996 (700) 98-76-54',
+          phoneRaw: '+996700987654',
+          email: 'kasymova@issyk-kul.gov.kg',
+          photo:
+            'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=900&q=80',
+        },
+        {
+          name: 'Бектуров Нурлан Азаматович',
+          position: 'Бөлүм башчысы',
+          phone: '+996 (777) 45-67-89',
+          phoneRaw: '+996777456789',
+          email: 'bekturov@issyk-kul.gov.kg',
+          photo:
+            'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=80',
         },
       ],
     },

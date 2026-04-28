@@ -118,6 +118,12 @@ export async function fetchLeadershipMembers({ lang = 'ru' } = {}) {
   return unpackList(payload);
 }
 
+export async function fetchEmployees({ lang = 'ru' } = {}) {
+  const url = buildUrl('/api/employees/', { lang });
+  const payload = await fetchJson(url);
+  return unpackList(payload);
+}
+
 export async function fetchDocuments({ lang = 'ru', category } = {}) {
   const url = buildUrl('/api/documents/', { lang, category });
   const payload = await fetchJson(url);
